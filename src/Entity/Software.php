@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SoftwareRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SoftwareRepository::class)]
@@ -13,8 +15,46 @@ class Software
     #[ORM\Column]
     private ?int $id = null;
 
+    /**
+     * @var Collection<int, EventRoom>
+     */
+    #[ORM\ManyToMany(targetEntity: EventRoom::class, mappedBy: 'softwares')]
+    private Collection $eventRooms;
+
+    public function __construct()
+    {
+        $this->eventRooms = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return Collection<int, EventRoom>
+     */
+    public function getEventRooms(): Collection
+    {
+        return $this->eventRooms;
+    }
+
+    public function addEventRoom(EventRoom $eventRoom): static
+    {
+        if (!$this->eventRooms->contains($eventRoom)) {
+            $this->eventRooms->add($eventRoom);
+            $eventRoom->addSoftware($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventRoom(EventRoom $eventRoom): static
+    {
+        if ($this->eventRooms->removeElement($eventRoom)) {
+            $eventRoom->removeSoftware($this);
+        }
+
+        return $this;
     }
 }
