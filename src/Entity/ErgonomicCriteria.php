@@ -21,6 +21,9 @@ class ErgonomicCriteria
     #[ORM\ManyToMany(targetEntity: EventRoom::class, mappedBy: 'ergonomicCriterias')]
     private Collection $eventRooms;
 
+    #[ORM\Column(length: 100)]
+    private ?string $name = null;
+
     public function __construct()
     {
         $this->eventRooms = new ArrayCollection();
@@ -54,6 +57,18 @@ class ErgonomicCriteria
         if ($this->eventRooms->removeElement($eventRoom)) {
             $eventRoom->removeErgonomicCriteria($this);
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }

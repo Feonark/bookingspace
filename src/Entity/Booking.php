@@ -17,7 +17,7 @@ class Booking
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $app_user = null;
+    private ?User $user = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $dateStart = null;
@@ -39,12 +39,12 @@ class Booking
 
     public function getAppUser(): ?User
     {
-        return $this->app_user;
+        return $this->user;
     }
 
-    public function setAppUser(?User $app_user): static
+    public function setAppUser(?User $user): static
     {
-        $this->app_user = $app_user;
+        $this->user = $user;
 
         return $this;
     }

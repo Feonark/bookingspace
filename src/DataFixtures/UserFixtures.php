@@ -30,7 +30,7 @@ class UserFixtures extends Fixture
         ;
         $manager->persist($admin);
         $manager->flush();
-        $this->addReference('user_admin', $admin); // Ajout de la référence utilisateur pour pouvoir ensuite l'utiliser dans BookingFixtures etc
+        $this->addReference('user_admin', $admin);
 
         // Création de 10 users
         for ($i = 0; $i < 10; $i++) {
