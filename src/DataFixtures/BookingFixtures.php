@@ -46,6 +46,7 @@ class BookingFixtures extends Fixture implements DependentFixtureInterface
             ;
 
             $manager->persist($booking);
+            $this->addReference('booking_' . $i, $booking);
         }
 
         $manager->flush();
