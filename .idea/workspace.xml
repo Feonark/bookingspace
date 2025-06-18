@@ -4,7 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b00a5f5-60ba-4370-96b3-be0f1ad70a5f" name="Changes" comment="Création admin/dashbord" />
+    <list default="true" id="4b00a5f5-60ba-4370-96b3-be0f1ad70a5f" name="Changes" comment="Ajout du calendrier">
+      <change afterPath="$PROJECT_DIR$/config/packages/webpack_encore.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migrations/Version20250618191552.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/BookingApiController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/BookingController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/booking/index.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/booking_api/index.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/booking_api_controller_php/index.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/Controller/BookingApiControllerTest.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/Controller/BookingControllerTest.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -60,7 +74,7 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "admin",
+    "git-widget-placeholder": "bookings",
     "last_opened_file_path": "C:/Users/mahbouba/Documents/ECF-Backend",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -75,6 +89,11 @@
     ]
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\mahbouba\Documents\ECF-Backend\assets" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -90,7 +109,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1750231140489</updated>
-      <workItem from="1750231141614" duration="13961000" />
+      <workItem from="1750231141614" duration="24665000" />
     </task>
     <task id="LOCAL-00001" summary="Création admin/dashbord">
       <option name="closed" value="true" />
@@ -100,14 +119,87 @@
       <option name="project" value="LOCAL" />
       <updated>1750251357797</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Création admin/dashbord/fonctions">
+      <option name="closed" value="true" />
+      <created>1750251873336</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1750251873336</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Création admin/dashbord/fonctions">
+      <option name="closed" value="true" />
+      <created>1750251983944</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1750251983944</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Ajout du calendrier">
+      <option name="closed" value="true" />
+      <created>1750276858342</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1750276858342</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="8ecaf62a-7926-40c1-aabd-2a7272f1a643" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="8ecaf62a-7926-40c1-aabd-2a7272f1a643">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Création admin/dashbord" />
-    <option name="LAST_COMMIT_MESSAGE" value="Création admin/dashbord" />
+    <MESSAGE value="Création admin/dashbord/fonctions" />
+    <MESSAGE value="Ajout du calendrier" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout du calendrier" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/migrations/Version20250618191552.php</url>
+          <line>5</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

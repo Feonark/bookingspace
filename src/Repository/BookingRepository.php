@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Booking;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +17,52 @@ class BookingRepository extends ServiceEntityRepository
         parent::__construct($registry, Booking::class);
     }
 
-//    /**
-//     * @return Booking[] Returns an array of Booking objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('b.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * Retourne toutes les réservations entre deux dates.
+     */
+    public function findBetween(\DateTimeInterface $start, \DateTimeInterface $end): array
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.startTime < :end')
+            ->andWhere('b.endTime > :start')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?Booking
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * Retourne les réservations d’un utilisateur donné.
+     */
+    public function findByUser(User $user): array
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('b.startTime', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Détecte les conflits de réservation pour une salle donnée sur un créneau horaire.
+     * (utile pour création ou modification)
+     */
+    public function findConflictingBookings(int $roomId, \DateTimeInterface $start, \DateTimeInterface $end, ?int $excludeId = null): array
+    {
+        $qb = $this->createQueryBuilder('b')
+            ->andWhere('b.room = :roomId')
+            ->andWhere('b.startTime < :end')
+            ->andWhere('b.endTime > :start')
+            ->setParameter('roomId', $roomId)
+            ->setParameter('start', $start)
+            ->setParameter('end', $end);
+
+        if ($excludeId !== null) {
+            $qb->andWhere('b.id != :excludeId')
+                ->setParameter('excludeId', $excludeId);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }
