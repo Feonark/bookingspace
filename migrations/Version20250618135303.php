@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250617125951 extends AbstractMigration
+final class Version20250618135303 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -66,6 +66,16 @@ final class Version20250617125951 extends AbstractMigration
             CREATE INDEX IDX_F01723DC8C8F50CB ON event_room_ergonomic_criteria (ergonomic_criteria_id)
         SQL);
         $this->addSql(<<<'SQL'
+            CREATE TABLE notification (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, booking_id INTEGER NOT NULL, user_id INTEGER NOT NULL, title VARCHAR(100) NOT NULL, message VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
+            , CONSTRAINT FK_BF5476CA3301C60 FOREIGN KEY (booking_id) REFERENCES booking (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_BF5476CAA76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX IDX_BF5476CA3301C60 ON notification (booking_id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX IDX_BF5476CAA76ED395 ON notification (user_id)
+        SQL);
+        $this->addSql(<<<'SQL'
             CREATE TABLE software (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(100) NOT NULL)
         SQL);
         $this->addSql(<<<'SQL'
@@ -115,6 +125,9 @@ final class Version20250617125951 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE event_room_ergonomic_criteria
+        SQL);
+        $this->addSql(<<<'SQL'
+            DROP TABLE notification
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE software

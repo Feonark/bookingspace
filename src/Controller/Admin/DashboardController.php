@@ -13,7 +13,7 @@ use App\Entity\Booking;
 use App\Entity\User;
 use App\Entity\ErgonomicCriteria;
 use App\Entity\Software;
-
+use App\Entity\Notification;
 
 
 
@@ -56,13 +56,11 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
 
         yield MenuItem::linkToCrud('EventRoom', 'fas fa-door-open', EventRoom::class);
+        yield MenuItem::linkToCrud('Notification', 'fas fa-door-open', Notification::class);
         yield MenuItem::linkToCrud('Equipment', 'fas fa-tools', Equipment::class);
         yield MenuItem::linkToCrud('Booking', 'fas fa-calendar-check', Booking::class);
         yield MenuItem::linkToCrud('Ergonomic Criteria', 'fas fa-brain', ErgonomicCriteria::class);
         yield MenuItem::linkToCrud('Software', 'fas fa-laptop-code', Software::class);
         yield MenuItem::linkToCrud('User', 'fas fa-user', User::class);
-
-
-
     }
 }
