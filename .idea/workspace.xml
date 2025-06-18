@@ -5,6 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b00a5f5-60ba-4370-96b3-be0f1ad70a5f" name="Changes" comment="Ajout du calendrier">
+      <change afterPath="$PROJECT_DIR$/config/packages/webpack_encore.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migrations/Version20250618191552.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/BookingApiController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/BookingController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/booking/index.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/booking_api/index.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/booking_api_controller_php/index.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/Controller/BookingApiControllerTest.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/Controller/BookingControllerTest.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -97,7 +109,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1750231140489</updated>
-      <workItem from="1750231141614" duration="23858000" />
+      <workItem from="1750231141614" duration="24665000" />
     </task>
     <task id="LOCAL-00001" summary="Création admin/dashbord">
       <option name="closed" value="true" />
@@ -136,6 +148,42 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="8ecaf62a-7926-40c1-aabd-2a7272f1a643" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="8ecaf62a-7926-40c1-aabd-2a7272f1a643">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Création admin/dashbord" />
