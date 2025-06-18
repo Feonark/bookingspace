@@ -1,0 +1,16 @@
+<div{{attributes}}>
+	<!-- component HTML -->
+	<input type="text" data-model="query" placeholder="Tapez un mot-clé...">
+
+	{% set eventRooms = this.eventRooms %}
+	{% if eventRooms|length > 0 %}
+		{% for item in eventRooms %}
+			<div>
+				<p>
+					{{ item.name }}
+				</p>
+			</div>
+		{% endfor %}
+		{% else %}
+	{% endif %}
+</div>

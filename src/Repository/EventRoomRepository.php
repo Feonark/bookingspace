@@ -16,28 +16,28 @@ class EventRoomRepository extends ServiceEntityRepository
         parent::__construct($registry, EventRoom::class);
     }
 
-//    /**
-//     * @return EventRoom[] Returns an array of EventRoom objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return EventRoom[] Returns an array of EventRoom objects
+     */
+    public function findByName(string $query): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.name LIKE :val')
+            ->setParameter('val', '%' . strtolower($query) . '%')
+            // ->orderBy('e.id', 'ASC')
+            // ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
-//    public function findOneBySomeField($value): ?EventRoom
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?EventRoom
+    //    {
+    //        return $this->createQueryBuilder('e')
+    //            ->andWhere('e.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
