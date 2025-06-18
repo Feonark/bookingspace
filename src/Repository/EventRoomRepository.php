@@ -19,25 +19,41 @@ class EventRoomRepository extends ServiceEntityRepository
     /**
      * @return EventRoom[] Returns an array of EventRoom objects
      */
-    public function findByName(string $query): array
+    public function findByFilters(?string $query, array $equipmentIds, array $criteriaIds, array $softwareIds): array
     {
-        return $this->createQueryBuilder('a')
-            ->where('a.name LIKE :val')
-            ->setParameter('val', '%' . strtolower($query) . '%')
-            // ->orderBy('e.id', 'ASC')
-            // ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+        $qb = $this->createQueryBuilder('er')
+            ->leftJoin('er.equipments', 'e')
+            ->leftJoin('er.ergonomicCriterias', 'c')
+            ->leftJoin('er.softwares', 's');
 
-    //    public function findOneBySomeField($value): ?EventRoom
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if ($query) {
+            $qb->andWhere('LOWER(er.name) LIKE :query')
+                ->setParameter('query', '%' . strtolower($query) . '%');
+        }
+
+        $qb->groupBy('er.id');
+
+        if (!empty($equipmentIds)) {
+            $qb->andWhere('e.id IN (:equipmentIds)')
+                ->setParameter('equipmentIds', $equipmentIds)
+                ->having('COUNT(DISTINCT e.id) = :equipmentCount')
+                ->setParameter('equipmentCount', count($equipmentIds));
+        }
+
+        if (!empty($criteriaIds)) {
+            $qb->andWhere('c.id IN (:criteriaIds)')
+                ->setParameter('criteriaIds', $criteriaIds)
+                ->andHaving('COUNT(DISTINCT c.id) = :criteriaCount')
+                ->setParameter('criteriaCount', count($criteriaIds));
+        }
+
+        if (!empty($softwareIds)) {
+            $qb->andWhere('s.id IN (:softwareIds)')
+                ->setParameter('softwareIds', $softwareIds)
+                ->andHaving('COUNT(DISTINCT s.id) = :softwareCount')
+                ->setParameter('softwareCount', count($softwareIds));
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }
