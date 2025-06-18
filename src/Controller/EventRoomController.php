@@ -23,4 +23,12 @@ final class EventRoomController extends AbstractController
             'controller_name' => 'EventRoomController',
         ]);
     }
+
+    #[Route('/{id}', name: 'eventroom')]
+    public function view(string $id): Response
+    {
+        return $this->render('eventroom/view.html.twig', [
+            'eventroom' => $this->errepo->findOneById($id)
+        ]);
+    }
 }
