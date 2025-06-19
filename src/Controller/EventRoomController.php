@@ -46,6 +46,17 @@ final class EventRoomController extends AbstractController
 
         if ($bookingForm->isSubmitted() && $bookingForm->isValid()) {
 
+            // Vérifie si une des dates est dans le passé
+            $now = new \DateTimeImmutable('today'); // ignore l'heure
+
+            if ($booking->getDateStart() < $now || $booking->getDateEnd() < $now) {
+                $this->addFlash('error', 'Les dates doivent être postérieures à aujourd’hui.');
+                return $this->render('booking/book.html.twig', [
+                    'bookingForm' => $bookingForm->createView(),
+                    'eventRoom' => $eventRoom
+                ]);
+            }
+
             // Vérifie si dateEnd est avant dateStart
             if ($booking->getDateEnd() <= $booking->getDateStart()) {
                 $this->addFlash('error', 'La date de fin doit être postérieure à la date de début.');
