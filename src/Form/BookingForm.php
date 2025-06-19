@@ -2,13 +2,14 @@
 
 namespace App\Form;
 
+use App\Entity\User;
 use App\Entity\Booking;
 use App\Entity\EventRoom;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class BookingForm extends AbstractType
 {
@@ -17,14 +18,8 @@ class BookingForm extends AbstractType
         $builder
             ->add('dateStart')
             ->add('dateEnd')
-            ->add('bookingStatus')
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
-            ])
-            ->add('eventRoom', EntityType::class, [
-                'class' => EventRoom::class,
-                'choice_label' => 'id',
+            ->add('submit', SubmitType::class, [
+                'label' => 'Enregistrer',
             ])
         ;
     }

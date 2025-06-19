@@ -5,6 +5,8 @@
 
 {% block body %}
 	<div class="">
-		<h1>{{ eventroom.name }}</h1>
+		<h1>{{ eventRoom.name }}</h1>
+		<a href="{{ path('eventroom_book', {'id': eventRoom.id })}}">BOOK THIS ROOM</a>
+
 	</div>
 {% endblock %}

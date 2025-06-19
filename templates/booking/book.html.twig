@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block body %}
+	{{ form_start(bookingForm, {'action': path('eventroom_book', {'id': eventRoom.id})}) }}
+    {{ form_row(bookingForm.dateStart) }}
+    {{ form_row(bookingForm.dateEnd) }}
+    {{ form_row(bookingForm.submit) }}
+	{{ form_end(bookingForm) }}
+{% endblock %}
+
+{% block javascripts %}{% endblock %}
