@@ -27,25 +27,41 @@ final class EventRoomSearch
     #[LiveProp(writable: true)]
     public ?array $selected_softwares = [];
 
+    #[LiveProp(writable: true)]
+    public ?string $dateStart = null;
+
+    #[LiveProp(writable: true)]
+    public ?string $dateEnd = null;
+
     public function __construct(
-        private EventRoomRepository $errepo,
-        private EquipmentRepository $eqrepo,
+        private EventRoomRepository         $errepo,
+        private EquipmentRepository         $eqrepo,
         private ErgonomicCriteriaRepository $ecrepo,
-        private SoftwareRepository $swrepo,
-    ) {}
+        private SoftwareRepository          $swrepo,
+    )
+    {
+    }
 
     public function getEventRooms(): array
     {
-        // if ($this->query || !empty($this->selectedEquipments)) {
         return $this->errepo->findByFilters(
             $this->query,
             $this->selected_equipments,
             $this->selected_ergonomic_criterias,
-            $this->selected_softwares
+            $this->selected_softwares,
+            $this->dateStart,
+            $this->dateEnd
         );
-        // }
+    }
 
-        return $this->errepo->findAll();
+    public function getDateStart(): ?string
+    {
+        return $this->dateStart;
+    }
+
+    public function getDateEnd(): ?string
+    {
+        return $this->dateEnd;
     }
 
     public function getEquipments(): array

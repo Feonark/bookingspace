@@ -19,8 +19,15 @@ class EventRoomRepository extends ServiceEntityRepository
     /**
      * @return EventRoom[] Returns an array of EventRoom objects
      */
-    public function findByFilters(?string $query, array $equipmentIds, array $criteriaIds, array $softwareIds): array
-    {
+    public function findByFilters(
+        ?string $query,
+        array $equipmentIds,
+        array $criteriaIds,
+        array $softwareIds,
+        ?string $dateStart = null,
+        ?string $dateEnd = null
+    ): array {
+
         $qb = $this->createQueryBuilder('er')
             ->leftJoin('er.equipments', 'e')
             ->leftJoin('er.ergonomicCriterias', 'c')
@@ -52,6 +59,29 @@ class EventRoomRepository extends ServiceEntityRepository
                 ->setParameter('softwareIds', $softwareIds)
                 ->andHaving('COUNT(DISTINCT s.id) = :softwareCount')
                 ->setParameter('softwareCount', count($softwareIds));
+        }
+
+        if ($dateStart && $dateEnd) {
+            $startDateTime = new \DateTime($dateStart);
+            $endDateTime = new \DateTime($dateEnd);
+            $endDateTime->setTime(23, 59, 59);
+
+            $subQb = $this->getEntityManager()->createQueryBuilder();
+            $subQb->select('b2.id')
+                ->from('App\Entity\Booking', 'b2')
+                ->where('b2.eventRoom = er')
+                ->andWhere('(:dateStart <= b2.dateEnd AND :dateEnd >= b2.dateStart)')
+                ->andWhere('b2.bookingStatus IN (:activeStatuses)');
+
+            $qb->andWhere($qb->expr()->not(
+                $qb->expr()->exists($subQb->getDQL())
+            ))
+                ->setParameter('dateStart', $startDateTime)
+                ->setParameter('dateEnd', $endDateTime)
+                ->setParameter('activeStatuses', [
+                    \App\Enum\BookingStatus::CONFIRMED,
+                    \App\Enum\BookingStatus::PENDING,
+                ]);
         }
 
         return $qb->getQuery()->getResult();

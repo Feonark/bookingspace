@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('calendar') }}
+{% endblock %}
+
+{% block body %}
+    <h1>liste des réservations</h1>
+    <ul>
+        {% for booking in bookings %}
+            <li>{{ booking.eventRoom.name }} {{ booking.dateStart|date("m/d/Y") }} {{ booking.dateEnd|date("m/d/Y") }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('calendar') }}
+{% endblock %}

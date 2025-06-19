@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block body %}
+	{% for label, messages in app.flashes %}
+		<div class="alert alert-{{ label }}">
+			{% for message in messages %}
+				{{ message }}
+			{% endfor %}
+		</div>
+	{% endfor %}
+	{{ form_start(bookingForm) }}
+	{{ form_row(bookingForm.dateStart) }}
+	{{ form_row(bookingForm.dateEnd) }}
+	{{ form_row(bookingForm.book) }}
+	{{ form_end(bookingForm) }}
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

@@ -1,0 +1,16 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content %}
+    <h1>Notifications</h1>
+
+    <ul>
+        {% for notification in notifications %}
+            <li>
+                <strong>{{ notification.title }}</strong> - {{ notification.message }} <br>
+                <small>Le {{ notification.createdAt|date('d/m/Y H:i') }}</small>
+            </li>
+        {% else %}
+            <li>Aucune notification</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

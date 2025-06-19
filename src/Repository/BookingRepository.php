@@ -6,6 +6,7 @@ use App\Entity\Booking;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Booking>
@@ -64,5 +65,14 @@ class BookingRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function getUserBookings(UserInterface $user)
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
     }
 }

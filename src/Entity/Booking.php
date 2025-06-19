@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Enum\BookingStatus;
+use App\EventSubscriber\BookingChangedNotifier;
 use App\Repository\BookingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,12 +22,11 @@ class Booking
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $dateStart = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $dateEnd = null;
-
 
     #[ORM\Column(enumType: BookingStatus::class)]
     private ?BookingStatus $bookingStatus = null;
