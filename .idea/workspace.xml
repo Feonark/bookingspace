@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4b00a5f5-60ba-4370-96b3-be0f1ad70a5f" name="Changes" comment="Ajout du calendrier">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/components/EventRoomSearch.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/components/EventRoomSearch.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -250,7 +249,7 @@
       <updated>1750231140489</updated>
       <workItem from="1750231141614" duration="24665000" />
       <workItem from="1750347852253" duration="333000" />
-      <workItem from="1750356773910" duration="10819000" />
+      <workItem from="1750356773910" duration="11759000" />
     </task>
     <task id="LOCAL-00001" summary="Création admin/dashbord">
       <option name="closed" value="true" />

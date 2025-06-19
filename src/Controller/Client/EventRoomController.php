@@ -38,7 +38,10 @@ final class EventRoomController extends AbstractController
 
         $booking->setEventRoom($eventRoom)
             ->setDateStart(new \DateTime($dateStart))
-            ->setDateEnd(new \DateTime($dateEnd));
+            ->setDateEnd(new \DateTime($dateEnd))
+            ->setAppUser($this->getUser())
+        ->setBookingStatus(BookingStatus::PENDING);
+
 
         $this->em->persist($booking);
         $this->em->flush();
