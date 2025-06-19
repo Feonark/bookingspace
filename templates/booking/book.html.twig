@@ -3,10 +3,17 @@
 {% block stylesheets %}{% endblock %}
 
 {% block body %}
-	{{ form_start(bookingForm, {'action': path('eventroom_book', {'id': eventRoom.id})}) }}
-    {{ form_row(bookingForm.dateStart) }}
-    {{ form_row(bookingForm.dateEnd) }}
-    {{ form_row(bookingForm.submit) }}
+	{% for label, messages in app.flashes %}
+		<div class="alert alert-{{ label }}">
+			{% for message in messages %}
+				{{ message }}
+			{% endfor %}
+		</div>
+	{% endfor %}
+	{{ form_start(bookingForm) }}
+	{{ form_row(bookingForm.dateStart) }}
+	{{ form_row(bookingForm.dateEnd) }}
+	{{ form_row(bookingForm.book) }}
 	{{ form_end(bookingForm) }}
 {% endblock %}
 

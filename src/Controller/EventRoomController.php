@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\Booking;
 use App\Form\BookingForm;
 use App\Enum\BookingStatus;
@@ -45,21 +44,52 @@ final class EventRoomController extends AbstractController
         $bookingForm = $this->createForm(BookingForm::class, $booking);
         $bookingForm->handleRequest($request);
 
-        // Traitement du formulaire 
         if ($bookingForm->isSubmitted() && $bookingForm->isValid()) {
 
-            $booking->setAppUser($this->getUser()); // Récupération de l'utilisateur
-            $booking->setEventRoom($eventRoom); // Récupération de l'eventRoom
-            $booking->setBookingStatus(BookingStatus::PENDING); // Setting du BookingStatus
+            // Vérifie si dateEnd est avant dateStart
+            if ($booking->getDateEnd() <= $booking->getDateStart()) {
+                $this->addFlash('error', 'La date de fin doit être postérieure à la date de début.');
+                return $this->render('booking/book.html.twig', [
+                    'bookingForm' => $bookingForm->createView(),
+                    'eventRoom' => $eventRoom
+                ]);
+            }
 
-            $this->em->persist($booking); // Enregistrement du booking (query SQL)
-            $this->em->flush($booking); // Exécution de l'erregistrement en BDD
+            // Vérification du chevauchement
+            $existingBookings = $this->em->getRepository(Booking::class)->createQueryBuilder('b')
+                ->where('b.eventRoom = :room')
+                ->andWhere('b.bookingStatus != :cancelled') // si tu gères les annulations
+                ->andWhere('b.dateStart < :end AND b.dateEnd > :start')
+                ->setParameter('room', $eventRoom)
+                ->setParameter('start', $booking->getDateStart())
+                ->setParameter('end', $booking->getDateEnd())
+                ->setParameter('cancelled', BookingStatus::CANCELLED) // sinon enlève cette ligne
+                ->getQuery()
+                ->getResult();
 
-            return $this->redirectToRoute('eventrooms'); // Redirection vers les eventrooms
+            if (count($existingBookings) > 0) {
+                $this->addFlash('error', 'Ce créneau est déjà réservé pour cette salle.');
+                return $this->render('booking/book.html.twig', [
+                    'bookingForm' => $bookingForm->createView(),
+                    'eventRoom' => $eventRoom
+                ]);
+            }
+
+            // Si tout est OK, on enregistre
+            $booking->setAppUser($this->getUser());
+            $booking->setEventRoom($eventRoom);
+            $booking->setBookingStatus(BookingStatus::PENDING);
+
+            $this->em->persist($booking);
+            $this->em->flush();
+
+            $this->addFlash('success', 'Votre réservation a bien été enregistrée.');
+            return $this->redirectToRoute('eventrooms');
         }
 
         return $this->render('booking/book.html.twig', [
-            'bookingForm' => $bookingForm->createView() // ✅ converti en vue pour Twig
+            'bookingForm' => $bookingForm->createView(),
+            'eventRoom' => $eventRoom
         ]);
     }
 }

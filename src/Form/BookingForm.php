@@ -18,16 +18,24 @@ class BookingForm extends AbstractType
         $builder
             ->add('dateStart')
             ->add('dateEnd')
-            ->add('submit', SubmitType::class, [
-                'label' => 'Enregistrer',
+            ->add('book', SubmitType::class, [
+                'label' => 'Booker',
             ])
         ;
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return 'booking_form';
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Booking::class,
+            'csrf_protection' => true,
+            'data_class' => Booking::class,
+            'csrf_token_id' => 'booking_form'
         ]);
     }
 }
