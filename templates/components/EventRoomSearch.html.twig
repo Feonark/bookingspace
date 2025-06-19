@@ -75,12 +75,11 @@
                             {{ software.name }}
                         </p>
                     {% endfor %}
-                    <a href="{{ path('eventroom', {'id': eventRoom.id })}}" class="bg-white">SEE DETAILS</a>
+                    <a href="{{ path('eventroom', {'eventRoom': eventRoom.id })}}" class="bg-white">SEE DETAILS</a>
                     {% if this.dateStart and this.dateEnd %}
                         <a href="{{ path('fast_book_eventroom', {'eventRoom': eventRoom.id, 'dateEnd': this.dateEnd, 'dateStart':this.dateStart }) }}">Fast
                             book</a>
                     {% endif %}
-                    <a href="{{ path('eventroom', {'eventRoom': eventRoom.id }) }}">GO</a>
                 </div>
             {% endfor %}
         </div>
