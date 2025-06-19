@@ -75,7 +75,8 @@
 							{{ software.name }}
 						</p>
 					{% endfor %}
-					<a href="{{ path('eventroom', {'id': eventRoom.id })}}">GO</a>
+					<a href="{{ path('eventroom', {'id': eventRoom.id })}}" class="bg-white">SEE DETAILS</a>
+					<a href="{{ path('eventroom_book', {'id': eventRoom.id })}}" class="">BOOK</a>
 				</div>
 			{% endfor %}
 		</div>
