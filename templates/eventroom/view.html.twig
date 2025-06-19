@@ -1,12 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détail d'une salle
-{% endblock %}
+{% block title %}Détails de la salle {{ eventRoom.name }}{% endblock %}
 
 {% block body %}
-	<div class="">
-		<h1>{{ eventRoom.name }}</h1>
-		<a href="{{ path('eventroom_book', {'id': eventRoom.id })}}">BOOK THIS ROOM</a>
+    <h1>{{ eventRoom.name }}</h1>
 
-	</div>
+    <p><strong>Capacité :</strong> {{ eventRoom.capacity }}</p>
+
+    {% if eventRoom.description %}
+        <p><strong>Description :</strong> {{ eventRoom.description }}</p>
+    {% endif %}
+
+    <h2>Logiciels disponibles</h2>
+    <ul>
+        {% for software in eventRoom.softwares %}
+            <li>{{ software.name }}</li>
+        {% else %}
+            <li>Aucun logiciel disponible.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Équipements disponibles</h2>
+    <ul>
+        {% for equipment in eventRoom.equipments %}
+            <li>{{ equipment.name }}</li>
+        {% else %}
+            <li>Aucun équipement disponible.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Critères ergonomiques</h2>
+    <ul>
+        {% for criterion in eventRoom.ergonomicCriterias %}
+            <li>{{ criterion.name }}</li>
+        {% else %}
+            <li>Aucun critère ergonomique renseigné.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url('eventrooms_list') }}">← Retour à la liste des salles</a>
+
+    <br><br>
+
+
+    {{ form_start(bookingForm) }}
+    {{ form_row(bookingForm.dateStart) }}
+    {{ form_row(bookingForm.dateEnd) }}
+    {{ form_row(bookingForm.book) }}
+    {{ form_end(bookingForm) }}
+
 {% endblock %}

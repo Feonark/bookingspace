@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Enum\BookingStatus;
+use App\EventSubscriber\BookingChangedNotifier;
 use App\Repository\BookingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

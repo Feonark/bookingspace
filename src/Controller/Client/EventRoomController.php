@@ -1,26 +1,29 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Client;
 
 use App\Entity\Booking;
-use App\Form\BookingForm;
+use App\Entity\EventRoom;
 use App\Enum\BookingStatus;
+use App\Form\BookingForm;
 use App\Repository\EventRoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/eventroom')]
+#[Route('/eventrooms')]
 final class EventRoomController extends AbstractController
 {
     public function __construct(
-        private EventRoomRepository $errepo,
+        private EventRoomRepository    $errepo,
         private EntityManagerInterface $em
-    ) {}
+    )
+    {
+    }
 
-    #[Route('s', name: 'eventrooms')]
+    #[Route('/', name: 'eventrooms_list')]
     public function index(): Response
     {
         return $this->render('eventroom/eventrooms.html.twig', [
@@ -28,18 +31,25 @@ final class EventRoomController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'eventroom')]
-    public function view(string $id): Response
+    #[Route('/fast_book/{eventRoom}/{dateStart}/{dateEnd}', name: 'fast_book_eventroom')]
+    public function fastBook(EventRoom $eventRoom, string $dateStart, string $dateEnd): Response
     {
-        return $this->render('eventroom/view.html.twig', [
-            'eventRoom' => $this->errepo->findOneById($id)
-        ]);
+        $booking = new Booking();
+
+        $booking->setEventRoom($eventRoom)
+            ->setDateStart(new \DateTime($dateStart))
+            ->setDateEnd(new \DateTime($dateEnd));
+
+        $this->em->persist($booking);
+        $this->em->flush();
+        $this->addFlash('success', 'Votre réservation a bien été enregistrée.');
+        return $this->redirectToRoute('eventrooms_list');
     }
 
-    #[Route('/{id}/book', name: 'eventroom_book', methods: ['GET', 'POST'])]
-    public function book(string $id, Request $request): Response
+    #[Route('/{eventRoom}', name: 'eventroom')]
+    public function view(EventRoom $eventRoom, Request $request): Response
     {
-        $eventRoom = $this->errepo->findOneById($id);
+
         $booking = new Booking();
         $bookingForm = $this->createForm(BookingForm::class, $booking);
         $bookingForm->handleRequest($request);
@@ -68,6 +78,7 @@ final class EventRoomController extends AbstractController
 
             // Vérification du chevauchement
             $existingBookings = $this->em->getRepository(Booking::class)->createQueryBuilder('b')
+                ->select('count(b.id)')
                 ->where('b.eventRoom = :room')
                 ->andWhere('b.bookingStatus != :cancelled') // si tu gères les annulations
                 ->andWhere('b.dateStart < :end AND b.dateEnd > :start')
@@ -76,9 +87,9 @@ final class EventRoomController extends AbstractController
                 ->setParameter('end', $booking->getDateEnd())
                 ->setParameter('cancelled', BookingStatus::CANCELLED) // sinon enlève cette ligne
                 ->getQuery()
-                ->getResult();
+                ->getSingleScalarResult();
 
-            if (count($existingBookings) > 0) {
+            if ($existingBookings > 0) {
                 $this->addFlash('error', 'Ce créneau est déjà réservé pour cette salle.');
                 return $this->render('booking/book.html.twig', [
                     'bookingForm' => $bookingForm->createView(),
@@ -93,12 +104,11 @@ final class EventRoomController extends AbstractController
 
             $this->em->persist($booking);
             $this->em->flush();
-
             $this->addFlash('success', 'Votre réservation a bien été enregistrée.');
-            return $this->redirectToRoute('eventrooms');
+            return $this->redirectToRoute('eventrooms_list');
         }
 
-        return $this->render('booking/book.html.twig', [
+        return $this->render('eventroom/view.html.twig', [
             'bookingForm' => $bookingForm->createView(),
             'eventRoom' => $eventRoom
         ]);

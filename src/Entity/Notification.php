@@ -6,6 +6,7 @@ use App\Repository\NotificationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Notification
 {
     #[ORM\Id]
