@@ -1,64 +1,84 @@
 <div{{attributes}}>
 	<!-- component HTML -->
-	{# FILTRER PAR EQUIPEMENT #}
-		<div class="mb-4"> <h3 class="font-bold">Filtrer par équipement</h3>
-		{% for equipment in this.equipments %}
-			<label>
-				<input type="checkbox" value="{{ equipment.id }}" data-model="selected_equipments">
-				{{ equipment.name }}
-			</label><br>
-		{% endfor %}
-	</div>
+	<div
+		class="flex flex-row">
+		{# FILTRER PAR EQUIPEMENT #}
+		<div class="">
+			<h3 class="font-bold">Filtrer par équipement</h3>
+			{% for equipment in this.equipments %}
+				<label>
+					<input type="checkbox" value="{{ equipment.id }}" data-model="selected_equipments">
+					{{ equipment.name }}
+				</label><br>
+			{% endfor %}
+		</div>
 
-	{# FILTRER PAR ERGONOMICCRITERIA #}
-	<div class="mb-4 bg-white">
-		<h3 class="font-bold">Filtrer par critère ergonomique</h3>
-		{% for ergonomicCriteria in this.ergonomicCriterias %}
-			<label>
-				<input type="checkbox" value="{{ ergonomicCriteria.id }}" data-model="selected_ergonomic_criterias">
-				{{ ergonomicCriteria.name }}
-			</label><br>
-		{% endfor %}
-	</div>
+		{# FILTRER PAR ERGONOMICCRITERIA #}
+		<div class="">
+			<h3 class="font-bold">Filtrer par critère ergonomique</h3>
+			{% for ergonomicCriteria in this.ergonomicCriterias %}
+				<label>
+					<input type="checkbox" value="{{ ergonomicCriteria.id }}" data-model="selected_ergonomic_criterias">
+					{{ ergonomicCriteria.name }}
+				</label><br>
+			{% endfor %}
+		</div>
 
-	{# FILTRER PAR SOFTWARE #}
-	<div class="mb-4">
-		<h3 class="font-bold">Filtrer par logiciel</h3>
-		{% for software in this.softwares %}
-			<label>
-				<input type="checkbox" value="{{ software.id }}" data-model="selected_softwares">
-				{{ software.name }}
-			</label><br>
-		{% endfor %}
+		{# FILTRER PAR SOFTWARE #}
+		<div class="">
+			<h3 class="font-bold">Filtrer par logiciel</h3>
+			{% for software in this.softwares %}
+				<label>
+					<input type="checkbox" value="{{ software.id }}" data-model="selected_softwares">
+					{{ software.name }}
+				</label><br>
+			{% endfor %}
+		</div>
+
+		{# FILTRER PAR DISPONIBILITES #}
+		<div class="">
+			<h3 class="font-bold">Filtrer par disponibilité</h3>
+			<label>Début :
+				<input type="date" data-model="dateStart">
+			</label>
+			<label>Fin :
+				<input type="date" data-model="dateEnd">
+			</label>
+		</div>
 	</div>
 
 	{# FILTRER PAR NOM #}
-	<input type="text" data-model="query" placeholder="Tapez un mot-clé...">
+	<input
+	type="text" data-model="query" placeholder="Tapez un mot-clé...">
+
+	{# AFFICHAGE DES SALLES #}
 	{% set eventRooms = this.eventRooms %}
 	{% if eventRooms|length > 0 %}
-		{% for eventRoom in eventRooms %}
-			<div class="">
-				<p class="bg-white">
-					{{ eventRoom.name }}
-				</p>
-				{% for equipment in eventRoom.equipments %}
-					<p class="">
-						{{ equipment.name }}
+		<div class="flex flew-row gap-2">
+			{% for eventRoom in eventRooms %}
+				<div class="">
+					<p class="bg-white">
+						{{ eventRoom.name }}
 					</p>
-				{% endfor %}
-				{% for ergonomicCriteria in eventRoom.ergonomicCriterias %}
-					<p class="">
-						{{ ergonomicCriteria.name }}
-					</p>
-				{% endfor %}
-				{% for software in eventRoom.softwares %}
-					<p class="">
-						{{ software.name }}
-					</p>
-				{% endfor %}
-				<a href="{{ path('eventroom', {'id': eventRoom.id })}}">GO</a>
-			</div>
-		{% endfor %}
+					{% for equipment in eventRoom.equipments %}
+						<p class="">
+							{{ equipment.name }}
+						</p>
+					{% endfor %}
+					{% for ergonomicCriteria in eventRoom.ergonomicCriterias %}
+						<p class="">
+							{{ ergonomicCriteria.name }}
+						</p>
+					{% endfor %}
+					{% for software in eventRoom.softwares %}
+						<p class="">
+							{{ software.name }}
+						</p>
+					{% endfor %}
+					<a href="{{ path('eventroom', {'id': eventRoom.id })}}">GO</a>
+				</div>
+			{% endfor %}
+		</div>
 	{% else %}
 		<p>Aucune salle trouvée</p>
 	{% endif %}

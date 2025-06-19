@@ -27,6 +27,12 @@ final class EventRoomSearch
     #[LiveProp(writable: true)]
     public ?array $selected_softwares = [];
 
+    #[LiveProp(writable: true)]
+    public ?string $dateStart = null;
+
+    #[LiveProp(writable: true)]
+    public ?string $dateEnd = null;
+
     public function __construct(
         private EventRoomRepository $errepo,
         private EquipmentRepository $eqrepo,
@@ -41,7 +47,9 @@ final class EventRoomSearch
             $this->query,
             $this->selected_equipments,
             $this->selected_ergonomic_criterias,
-            $this->selected_softwares
+            $this->selected_softwares,
+            $this->dateStart,
+            $this->dateEnd
         );
         // }
 
