@@ -75,4 +75,13 @@ class BookingRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getBookingsByDate(\DateTimeInterface $start): array
+    {
+        return $this->createQueryBuilder('b')
+            ->where('b.dateStart like :start')
+            ->setParameter('start', $start->format('Y-m-d').'%')
+            ->getQuery()
+            ->getResult();
+    }
 }

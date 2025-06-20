@@ -18,7 +18,6 @@ class NotificationFixtures extends Fixture implements DependentFixtureInterface
             $notification = new Notification();
             $notification->setTitle("Notification $i");
             $notification->setMessage("Cet utilisateur demande à réserver une salle.");
-            $notification->setCreatedAt(new \DateTimeImmutable());
 
             /** @var Booking $booking */
             $booking = $this->getReference("booking_" . rand(1, 5), Booking::class); // Suppose 5 bookings
