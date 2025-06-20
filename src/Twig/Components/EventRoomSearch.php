@@ -33,14 +33,15 @@ final class EventRoomSearch
     #[LiveProp(writable: true)]
     public ?string $dateEnd = null;
 
+    #[LiveProp(writable: true)]
+    public ?int $capacity = null;
+
     public function __construct(
         private EventRoomRepository         $errepo,
         private EquipmentRepository         $eqrepo,
         private ErgonomicCriteriaRepository $ecrepo,
         private SoftwareRepository          $swrepo,
-    )
-    {
-    }
+    ) {}
 
     public function getEventRooms(): array
     {
@@ -50,7 +51,8 @@ final class EventRoomSearch
             $this->selected_ergonomic_criterias,
             $this->selected_softwares,
             $this->dateStart,
-            $this->dateEnd
+            $this->dateEnd,
+            $this->capacity
         );
     }
 
