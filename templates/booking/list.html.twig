@@ -1,20 +1,41 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    {{ encore_entry_link_tags('calendar') }}
+	{{ parent() }}
+	{{ encore_entry_link_tags('calendar') }}
 {% endblock %}
 
 {% block body %}
-    <h1>liste des réservations</h1>
-    <ul>
-        {% for booking in bookings %}
-            <li>{{ booking.eventRoom.name }} {{ booking.dateStart|date("m/d/Y") }} {{ booking.dateEnd|date("m/d/Y") }}</li>
-        {% endfor %}
-    </ul>
+	<h1>Voici la liste de vos réservations,
+		{{ app.user.username }}</h1>
+	<ul>
+		<div class="flex flex-row">
+			{% for booking in bookings %}
+				<div>
+					<div>Vous avez réservé la salle
+						{{ booking.eventRoom.name }}
+						du
+						{{ booking.dateStart|date("m/d/Y") }}
+						au
+						{{ booking.dateEnd|date("m/d/Y") }}</div>
+					<div>Statut de la réservation :
+						{{ booking.bookingStatus.value }}
+
+						<a href="#" class="bg-white">Annuler la réservation</a>
+
+						{% if (booking.bookingStatus.value != 'confirmed' )%}
+							<div>
+								<a href="{{ path('booking_edit', {'eventRoom': booking.eventRoom.id }) }}" class="bg-white">Modifier la réservation</a>
+							</div>
+						{% endif %}
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</ul>
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('calendar') }}
+	{{ parent() }}
+	{{ encore_entry_script_tags('calendar') }}
 {% endblock %}
