@@ -13,40 +13,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/eventrooms')]
+#[Route('/eventroom')]
 final class EventRoomController extends AbstractController
 {
     public function __construct(
         private EventRoomRepository    $errepo,
         private EntityManagerInterface $em
-    )
-    {
-    }
+    ) {}
 
-    #[Route('/', name: 'eventrooms_list')]
+    #[Route('s', name: 'eventrooms_list')]
     public function index(): Response
     {
         return $this->render('eventroom/eventrooms.html.twig', [
             'controller_name' => 'EventRoomController',
         ]);
-    }
-
-    #[Route('/fast_book/{eventRoom}/{dateStart}/{dateEnd}', name: 'fast_book_eventroom')]
-    public function fastBook(EventRoom $eventRoom, string $dateStart, string $dateEnd): Response
-    {
-        $booking = new Booking();
-
-        $booking->setEventRoom($eventRoom)
-            ->setDateStart(new \DateTime($dateStart))
-            ->setDateEnd(new \DateTime($dateEnd))
-            ->setAppUser($this->getUser())
-        ->setBookingStatus(BookingStatus::PENDING);
-
-
-        $this->em->persist($booking);
-        $this->em->flush();
-        $this->addFlash('success', 'Votre réservation a bien été enregistrée.');
-        return $this->redirectToRoute('eventrooms_list');
     }
 
     #[Route('/{eventRoom}', name: 'eventroom')]
@@ -64,19 +44,13 @@ final class EventRoomController extends AbstractController
 
             if ($booking->getDateStart() < $now || $booking->getDateEnd() < $now) {
                 $this->addFlash('error', 'Les dates doivent être postérieures à aujourd’hui.');
-                return $this->render('booking/book.html.twig', [
-                    'bookingForm' => $bookingForm->createView(),
-                    'eventRoom' => $eventRoom
-                ]);
+                return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);
             }
 
             // Vérifie si dateEnd est avant dateStart
             if ($booking->getDateEnd() <= $booking->getDateStart()) {
                 $this->addFlash('error', 'La date de fin doit être postérieure à la date de début.');
-                return $this->render('booking/book.html.twig', [
-                    'bookingForm' => $bookingForm->createView(),
-                    'eventRoom' => $eventRoom
-                ]);
+                return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);
             }
 
             // Vérification du chevauchement
@@ -94,10 +68,7 @@ final class EventRoomController extends AbstractController
 
             if ($existingBookings > 0) {
                 $this->addFlash('error', 'Ce créneau est déjà réservé pour cette salle.');
-                return $this->render('booking/book.html.twig', [
-                    'bookingForm' => $bookingForm->createView(),
-                    'eventRoom' => $eventRoom
-                ]);
+                return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);
             }
 
             // Si tout est OK, on enregistre

@@ -62,8 +62,18 @@ class EventRoomRepository extends ServiceEntityRepository
         }
 
         if ($dateStart && $dateEnd) {
+            $now = new \DateTime('today');
             $startDateTime = new \DateTime($dateStart);
             $endDateTime = new \DateTime($dateEnd);
+
+            if ($startDateTime < $now || $endDateTime < $now) {
+                return [];
+            }
+
+            if ($startDateTime > $endDateTime) {
+                return [];
+            }
+
             $endDateTime->setTime(23, 59, 59);
 
             $subQb = $this->getEntityManager()->createQueryBuilder();
