@@ -99,6 +99,22 @@ final class BookingController extends AbstractController
         ]);
     }
 
+    #[Route('/booking/{id}/cancel', name: 'booking_cancel', methods: ['POST', 'GET'])]
+    public function cancel(Booking $booking, EntityManagerInterface $em): Response
+    {
+        if ($booking->getAppUser() !== $this->getUser()) {
+            $this->addFlash('error', 'Vous ne pouvez pas annuler une réservation car vous n\'êtes pas connecté(e).');
+            return $this->redirectToRoute('login');
+        }
+
+        $booking->setBookingStatus(BookingStatus::CANCELLED);
+        $em->flush();
+
+        $this->addFlash('success', 'Réservation annulée avec succès.');
+
+        return $this->redirectToRoute('bookings'); // ou une autre route selon ton app
+    }
+
 
     #[Route('/calendar', name: 'app_booking_calendar')]
     public function calendar(): Response
