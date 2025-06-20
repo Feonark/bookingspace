@@ -16,7 +16,6 @@ use Symfony\Bundle\SecurityBundle\Security;
 #[AsEntityListener(event: Events::postRemove, entity: Booking::class)]
 readonly class BookingChangedNotifier
 {
-
     public function __construct(private Security $security)
     {
     }
@@ -34,18 +33,22 @@ readonly class BookingChangedNotifier
     public function postRemove(Booking $booking, PostPersistEventArgs $event): void
     {
         $this->handleEvent($event, 'supprimée');
-
     }
 
     private function handleEvent(LifecycleEventArgs $args, string $action): void
     {
-
         /**
          * @var $entity Booking
          */
         $entity = $args->getObject();
-
         $em = $args->getObjectManager();
+
+        $user = $this->security->getUser();
+
+        // Si aucun utilisateur connecté, on ne crée pas la notification
+        if (!$user) {
+            return;
+        }
 
         $notification = new Notification();
         $notification->setTitle('Réservation ' . $action);
@@ -53,11 +56,10 @@ readonly class BookingChangedNotifier
             'La réservation #%d a été %s par %s.',
             $entity->getId(),
             $action,
-            $this->security->getUser() ? $this->security->getUser()->getUserIdentifier() : 'un utilisateur'
+            $user->getUserIdentifier()
         ));
-        $notification->setCreatedAt(new \DateTimeImmutable());
         $notification->setBooking($entity);
-        $notification->setUser($this->security->getUser());
+        $notification->setUser($user);
 
         $em->persist($notification);
         $em->flush();
