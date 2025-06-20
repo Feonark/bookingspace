@@ -6,6 +6,14 @@
 {% endblock %}
 
 {% block body %}
+	{% for label, messages in app.flashes %}
+		<div class="alert alert-{{ label }}">
+			{% for message in messages %}
+				{{ message }}
+			{% endfor %}
+		</div>
+	{% endfor %}
+
 	<h1>Voici la liste de vos réservations,
 		{{ app.user.username }}</h1>
 	<ul>
@@ -21,9 +29,11 @@
 					<div>Statut de la réservation :
 						{{ booking.bookingStatus.value }}
 
-						<a href="#" class="bg-white">Annuler la réservation</a>
+						{% if (booking.bookingStatus.value != 'cancelled')%}
+							<a href="{{ path('booking_cancel', {'id': booking.id }) }}" class="bg-white">Annuler la réservation</a>
+						{% endif %}
 
-						{% if (booking.bookingStatus.value != 'confirmed' )%}
+						{% if (booking.bookingStatus.value != 'confirmed' and booking.bookingStatus.value != 'cancelled')%}
 							<div>
 								<a href="{{ path('booking_edit', {'eventRoom': booking.eventRoom.id }) }}" class="bg-white">Modifier la réservation</a>
 							</div>
