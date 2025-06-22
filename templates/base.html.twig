@@ -21,7 +21,8 @@
 </head>
 <body class="antialiased bg-gray-100 text-gray-800">
 {% block body %}{% endblock %}
-
+{{ encore_entry_link_tags('app') }}
+{{ encore_entry_script_tags('app') }}
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
     {% block importmap %}
