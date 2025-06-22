@@ -76,11 +76,13 @@ class BookingRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getBookingsByDate(\DateTimeInterface $start): array
+    public function getRemindBookingsByDate(\DateTimeInterface $start): array
     {
         return $this->createQueryBuilder('b')
-            ->where('b.dateStart like :start')
-            ->setParameter('start', $start->format('Y-m-d').'%')
+            ->where('b.dateStart < :start')
+            ->andWhere('b.reminderNotificationCreated <> :reminderNotificationCreated')
+            ->setParameter('start', $start->format('Y-m-d'))
+            ->setParameter('reminderNotificationCreated', true)
             ->getQuery()
             ->getResult();
     }

@@ -41,6 +41,9 @@ class Booking
     #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'booking', orphanRemoval: true)]
     private Collection $notifications;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $reminderNotificationCreated = false;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
@@ -137,6 +140,18 @@ class Booking
                 $notification->setBooking(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isReminderNotificationCreated(): bool
+    {
+        return $this->reminderNotificationCreated;
+    }
+
+    public function setReminderNotificationCreated(bool $reminderNotificationCreated): self
+    {
+        $this->reminderNotificationCreated = $reminderNotificationCreated;
 
         return $this;
     }

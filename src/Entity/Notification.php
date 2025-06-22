@@ -40,17 +40,6 @@ class Notification
         $this->createdAt = new \DateTimeImmutable();
     }
 
-    public function isRead(): bool
-    {
-        return $this->isRead;
-    }
-
-    public function setIsRead(bool $isRead): static
-    {
-        $this->isRead = $isRead;
-        return $this;
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -113,6 +102,17 @@ class Notification
     {
         $this->user = $user;
 
+        return $this;
+    }
+
+    public function isRead(): bool
+    {
+        return $this->isRead;
+    }
+
+    public function setIsRead(bool $isRead): static
+    {
+        $this->isRead = $isRead;
         return $this;
     }
 }

@@ -4,18 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b00a5f5-60ba-4370-96b3-be0f1ad70a5f" name="Changes" comment="Ajout du calendrier">
-      <change afterPath="$PROJECT_DIR$/config/packages/easy_admin.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/layout.html.twig" afterDir="false" />
+    <list default="true" id="4b00a5f5-60ba-4370-96b3-be0f1ad70a5f" name="Changes" comment="Création de la commande de notification j-5">
+      <change afterPath="$PROJECT_DIR$/var/data_dev.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20250619101551.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Admin/DashboardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Admin/DashboardController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataFixtures/NotificationFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/NotificationFixtures.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Booking.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Booking.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Notification.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Notification.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/EventSubscriber/BookingChangedNotifier.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/EventSubscriber/BookingChangedNotifier.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repository/BookingRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/BookingRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/NotificationRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/NotificationRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin/dashboard.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/dashboard.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -268,7 +262,7 @@
       <workItem from="1750414112741" duration="204000" />
       <workItem from="1750414333969" duration="30000" />
       <workItem from="1750414372586" duration="509000" />
-      <workItem from="1750415212368" duration="11147000" />
+      <workItem from="1750415212368" duration="14576000" />
     </task>
     <task id="LOCAL-00001" summary="Création admin/dashbord">
       <option name="closed" value="true" />
@@ -302,7 +296,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750276858342</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Création de la commande de notification j-5">
+      <option name="closed" value="true" />
+      <created>1750432576037</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1750432576037</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -348,7 +350,8 @@
     <MESSAGE value="Création admin/dashbord" />
     <MESSAGE value="Création admin/dashbord/fonctions" />
     <MESSAGE value="Ajout du calendrier" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout du calendrier" />
+    <MESSAGE value="Création de la commande de notification j-5" />
+    <option name="LAST_COMMIT_MESSAGE" value="Création de la commande de notification j-5" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
