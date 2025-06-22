@@ -25,7 +25,8 @@ class EventRoomRepository extends ServiceEntityRepository
         array $criteriaIds,
         array $softwareIds,
         ?string $dateStart = null,
-        ?string $dateEnd = null
+        ?string $dateEnd = null,
+        ?int $capacity = null
     ): array {
 
         $qb = $this->createQueryBuilder('er')
@@ -36,6 +37,11 @@ class EventRoomRepository extends ServiceEntityRepository
         if ($query) {
             $qb->andWhere('LOWER(er.name) LIKE :query')
                 ->setParameter('query', '%' . strtolower($query) . '%');
+        }
+
+        if ($capacity !== null) {
+            $qb->andWhere('er.capacity >= :capacity')
+                ->setParameter('capacity', $capacity);
         }
 
         $qb->groupBy('er.id');
@@ -62,8 +68,18 @@ class EventRoomRepository extends ServiceEntityRepository
         }
 
         if ($dateStart && $dateEnd) {
+            $now = new \DateTime('today');
             $startDateTime = new \DateTime($dateStart);
             $endDateTime = new \DateTime($dateEnd);
+
+            if ($startDateTime < $now || $endDateTime < $now) {
+                return [];
+            }
+
+            if ($startDateTime > $endDateTime) {
+                return [];
+            }
+
             $endDateTime->setTime(23, 59, 59);
 
             $subQb = $this->getEntityManager()->createQueryBuilder();
