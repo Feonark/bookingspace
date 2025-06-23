@@ -18,7 +18,8 @@
 		{% block importmap %}
 			{{ importmap('app') }}
 		{% endblock %}
-
-		{% block javascripts %}{% endblock %}
+		{% block javascripts %}
+			<script type="module" src="{{ asset('assets/calendar.js') }}"></script>
+		{% endblock %}
 	</body>
 </html>
