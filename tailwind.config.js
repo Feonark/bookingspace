@@ -1,13 +1,11 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: [
-        './templates/**/*.html.twig',
-        './assets/**/*.js',
-    ],
-    safelist: [
-        /^fc-/, // Pour préserver les classes FullCalendar (fc-button, fc-daygrid, etc.)
-    ],
-    theme: {
-        extend: {},
-    },
-    plugins: [],
+  content: [
+    "./assets/**/*.js",
+    "./templates/**/*.html.twig",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
 }
