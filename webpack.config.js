@@ -18,7 +18,7 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('calendar', './assets/calendar.js')
     // CSS entry for Tailwind
-    .addStyleEntry('app', './assets/styles/app.css')
+    .addStyleEntry('appStyles', './assets/styles/app.css')
 
     // Splitting and optimization
     .splitEntryChunks()

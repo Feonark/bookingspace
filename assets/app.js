@@ -6,7 +6,7 @@ import './bootstrap.js';
  * This file will be included onto the page via the importmap() Twig function,
  * which should already be in your base.html.twig.
  */
-import './styles/app.css';
+//import './styles/app.css';
 
 document.addEventListener('DOMContentLoaded', function () {
     const calendarEl = document.getElementById('calendar');
@@ -29,7 +29,7 @@ import { Calendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
-import '@fullcalendar/core/index.css';
-import '@fullcalendar/daygrid/index.css';
+//import '@fullcalendar/core/index.css';
+//import '@fullcalendar/daygrid/index.css';
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
