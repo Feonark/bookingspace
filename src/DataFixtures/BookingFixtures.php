@@ -25,7 +25,7 @@ class BookingFixtures extends Fixture implements DependentFixtureInterface
             /** @var User $user */
             $user = $this->getReference('user_' . $faker->numberBetween(0, 9), User::class);
 
-            $eventRoomRef = 'event_room_' . $faker->numberBetween(0, 4);
+            $eventRoomRef = 'event_room_' . $faker->numberBetween(0, 9);
             $eventRoom = $this->getReference($eventRoomRef, EventRoom::class);
 
             // Dates : date de début aléatoire dans 30 jours
