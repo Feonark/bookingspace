@@ -51,10 +51,10 @@
 				{% for equipment in this.equipments %}
 					<label class="cursor-pointer">
 						<input type="checkbox" value="{{ equipment.id }}" data-model="selected_equipments" class="sr-only peer"/>
-						<div class="px-2 py-1 rounded-xl border border-gray-600 text-black transition
-																																																																																																																																								hover:bg-gray-300
-																																																																																																																																								peer-checked:bg-blue-700 peer-checked:text-white peer-checked:border-blue-700
-																																																																																																																																								peer-checked:hover:bg-blue-700">
+						<div class="px-2 py-1 rounded-xl border border-gray-600 text-black text-sm transition
+								hover:bg-gray-300
+								peer-checked:bg-blue-700 peer-checked:text-white peer-checked:border-blue-700
+								peer-checked:hover:bg-blue-700">
 							{{ equipment.name }}
 						</div>
 					</label>
@@ -70,10 +70,10 @@
 				{% for ergonomicCriteria in this.ergonomicCriterias %}
 					<label class="cursor-pointer">
 						<input type="checkbox" value="{{ ergonomicCriteria.id }}" data-model="selected_ergonomic_criterias" class="sr-only peer"/>
-						<div class="px-2 py-1 rounded-xl border border-gray-600 text-black transition
-																																																																																																																																								hover:bg-gray-300
-																																																																																																																																								peer-checked:bg-blue-700 peer-checked:text-white peer-checked:border-blue-700
-																																																																																																																																								peer-checked:hover:bg-blue-700">
+						<div class="px-2 py-1 rounded-xl border border-gray-600 text-black text-sm transition
+								hover:bg-gray-300
+								peer-checked:bg-blue-700 peer-checked:text-white peer-checked:border-blue-700
+								peer-checked:hover:bg-blue-700">
 							{{ ergonomicCriteria.name }}
 						</div>
 					</label>
@@ -89,10 +89,10 @@
 				{% for software in this.softwares %}
 					<label class="cursor-pointer">
 						<input type="checkbox" value="{{ software.id }}" data-model="selected_softwares" class="sr-only peer"/>
-						<div class="px-2 py-1 rounded-xl border border-gray-600 text-black transition
-																																																																																																																																								hover:bg-gray-300
-																																																																																																																																								peer-checked:bg-blue-700 peer-checked:text-white peer-checked:border-blue-700
-																																																																																																																																								peer-checked:hover:bg-blue-700">
+						<div class="px-2 py-1 rounded-xl border border-gray-600 text-black text-sm transition
+								hover:bg-gray-300
+								peer-checked:bg-blue-700 peer-checked:text-white peer-checked:border-blue-700
+								peer-checked:hover:bg-blue-700">
 							{{ software.name }}
 						</div>
 					</label>
@@ -107,7 +107,7 @@
 	{% if eventRooms|length > 0 %}
 		<div class="w-2/3 flex flex-col gap-4">
 			<p class="">{{ eventRooms|length }}
-				résultat(s)</p>
+				{{ eventRooms|length > 1 ? "résultats" : "résultat"}}</p>
 			<p class="text-sm text-gray-600 italic">
 				Filtres appliqués :
 				{% set hasFilter = false %}
