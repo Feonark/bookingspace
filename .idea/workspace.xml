@@ -4,30 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b00a5f5-60ba-4370-96b3-be0f1ad70a5f" name="Changes" comment="Correction des routes / conditions pour formulaire">
-      <change afterPath="$PROJECT_DIR$/config/routes/annotations.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/bundles/TwigBundle/Exception/error404.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/controllers.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/controllers.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/framework.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/framework.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Command/SendUserNotificationsCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Command/SendUserNotificationsCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Client/BookingController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Client/BookingController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Client/EventRoomController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Client/EventRoomController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Client/LoginController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/LoginController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Client/RegistrationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Client/RegistrationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/HomeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Booking.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Booking.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/EventSubscriber/BookingChangedNotifier.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/EventSubscriber/BookingChangedNotifier.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/BookingForm.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/BookingForm.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/RegistrationForm.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/RegistrationForm.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/booking/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/booking/edit.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/eventroom/view.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/eventroom/view.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/var/data_dev.db" beforeDir="false" afterPath="$PROJECT_DIR$/var/data_dev.db" afterDir="false" />
-    </list>
+    <list default="true" id="4b00a5f5-60ba-4370-96b3-be0f1ad70a5f" name="Changes" comment="Correction des routes / conditions pour formulaire" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -53,7 +30,7 @@
     </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="styling" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -214,6 +191,7 @@
       <path value="$PROJECT_DIR$/vendor/composer" />
       <path value="$PROJECT_DIR$/vendor/symfony/webpack-encore-bundle" />
       <path value="$PROJECT_DIR$/vendor/symfony/ux-icons" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/annotations" />
     </include_path>
   </component>
   <component name="ProjectColorInfo">{
@@ -231,7 +209,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "database.data.extractors.current.export.id": "Comma-separated (CSV)_id",
-    "git-widget-placeholder": "styling",
+    "git-widget-placeholder": "Routes",
     "last_opened_file_path": "C:/Users/mahbouba/Documents/ECF-Backend/templates/booking",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -275,6 +253,7 @@
       <workItem from="1750347852253" duration="333000" />
       <workItem from="1750356773910" duration="11759000" />
       <workItem from="1750627396055" duration="8711000" />
+      <workItem from="1750838229059" duration="361000" />
     </task>
     <task id="LOCAL-00001" summary="Création admin/dashbord">
       <option name="closed" value="true" />
@@ -316,7 +295,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750629059868</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Correction des routes / conditions pour formulaire">
+      <option name="closed" value="true" />
+      <created>1750838264953</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1750838264953</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
