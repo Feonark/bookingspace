@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block body %}
+
 	{% for label, messages in app.flashes %}
 		<div class="alert alert-{{ label }}">
 			{% for message in messages %}
@@ -11,8 +12,8 @@
 			{% endfor %}
 		</div>
 	{% endfor %}
-	<div class="">
-		<h1 class="">Recherchez une salle</h1>
+	<div class="p-4">
+		<h1 class="p-24 text-center text-3xl font-semibold">Rechercher une salle</h1>
 		<twig:EventRoomSearch/>
 	</div>
 

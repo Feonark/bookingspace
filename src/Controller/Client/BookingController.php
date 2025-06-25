@@ -53,8 +53,17 @@ final class BookingController extends AbstractController
         $form = $this->createForm(BookingForm::class, $booking);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
 
+        if ($form->isSubmitted()) {
+            if (!$form->isValid()) {
+                $formErrors = $form->getErrors(true);
+                $messages = [];
+                foreach ($formErrors as $formError) {
+                    $messages[] = $formError->getMessage() . ".\n";
+                }
+                $this->addFlash('error', implode(' ', $messages));
+                return $this->redirectToRoute('booking_edit', ['eventRoom' => $eventRoom->getId()]);
+            }
             // Tu peux réutiliser tes vérifications ici (dates dans le futur, chevauchement, etc.)
             $now = new \DateTimeImmutable('today');
             if ($booking->getDateStart() < $now || $booking->getDateEnd() < $now) {

@@ -16,8 +16,12 @@
 
 	{{ form_start(bookingForm) }}
 	{{ form_row(bookingForm.dateStart) }}
+	{{ form_errors(bookingForm.dateStart) }}
 	{{ form_row(bookingForm.dateEnd) }}
+	{{ form_errors(bookingForm.dateEnd) }}
 	{{ form_row(bookingForm.book) }}
 	{{ form_end(bookingForm) }}
+{{ form_errors(bookingForm) }}
+    {{ form_rest(bookingForm) }}
 
 {% endblock %}

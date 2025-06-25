@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 	<head>
 		<meta charset="UTF-8">
 		<title>
@@ -7,19 +7,21 @@
 			{% endblock %}
 		</title>
 		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-		{% block stylesheets %}
-			{{ encore_entry_link_tags('app') }}
-		{% endblock %}
 
+		{% block stylesheets %}
+			<link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+		{% endblock %}
+		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+		<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
+		{% block importmap %}
+			{{ importmap('app') }}
+		{% endblock %}
 		{% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
-			{% block importmap %}
-				{{ importmap('app') }}
-			{% endblock %}
+			<script type="module" src="{{ asset('assets/calendar.js') }}"></script>
 		{% endblock %}
 	</head>
-	<body>
-		{% block body %}
-		{% endblock %}
+	<body class="antialiased bg-gray-100 text-gray-800">
+		<twig:Navigation/>
+		{% block body %}{% endblock %}
 	</body>
 </html>

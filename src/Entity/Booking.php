@@ -41,6 +41,12 @@ class Booking
     #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'booking', orphanRemoval: true)]
     private Collection $notifications;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $reminderNotificationCreated = false;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable:true)]
+    private ?\DateTime $reminderNotificationSentAt = null;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
@@ -139,5 +145,27 @@ class Booking
         }
 
         return $this;
+    }
+
+    public function isReminderNotificationCreated(): bool
+    {
+        return $this->reminderNotificationCreated;
+    }
+
+    public function setReminderNotificationCreated(bool $reminderNotificationCreated): self
+    {
+        $this->reminderNotificationCreated = $reminderNotificationCreated;
+
+        return $this;
+    }
+
+    public function getReminderNotificationSentAt(): ?\DateTime
+    {
+        return $this->reminderNotificationSentAt;
+    }
+
+    public function setReminderNotificationSentAt(?\DateTime $reminderNotificationSentAt): void
+    {
+        $this->reminderNotificationSentAt = $reminderNotificationSentAt;
     }
 }

@@ -1,16 +1,1 @@
-{% extends 'base.html.twig' %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    {{ encore_entry_link_tags('calendar') }}
-{% endblock %}
-
-{% block body %}
-    <h1>Calendrier des réservations</h1>
-    <div id="calendar"></div>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('calendar') }}
-{% endblock %}
+<div data-live-ignore id="calendar" data-room-id="{{ eventRoom.id }}" class="h-[400px]"></div>

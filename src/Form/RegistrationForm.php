@@ -10,18 +10,46 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
-            ->add('username')
-            ->add('phoneNumber')
+            ->add(
+                'email',
+                null,
+                [
+                    'required' => true,
+                    'constraints' => [new Email(
+                        message: 'L`\'email "{{ value }}" est invalide.',
+                    )],
+                ]
+            )
+            ->add('username',
+                null,
+                ['constraints' => new Length([
+                    'min' => 6,
+                    'minMessage' => 'Your username should be at least {{ limit }} characters',
+                    // max length allowed by Symfony for security reasons
+                    'max' => 4096,
+                ])])
+            ->add('phoneNumber',
+                null
+                , ['constraints' => [new Regex(
+                    pattern: "/^\+?[0-9]{7,15}$/",
+                    message: "Please enter a valid phone number."
+                )]])
             ->add('company')
-            ->add('siret')
+            ->add('siret',
+                null,
+                ['constraints' => [new Regex(
+                    pattern: "/^\d{14}$/",
+                    message: "Please enter a valid siret number."
+                )]])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -46,8 +74,7 @@ class RegistrationForm extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -32,7 +32,6 @@
 						{% if (booking.bookingStatus.value != 'cancelled')%}
 							<a href="{{ path('booking_cancel', {'id': booking.id }) }}" class="bg-white">Annuler la réservation</a>
 						{% endif %}
-
 						{% if (booking.bookingStatus.value != 'confirmed' and booking.bookingStatus.value != 'cancelled')%}
 							<div>
 								<a href="{{ path('booking_edit', {'eventRoom': booking.eventRoom.id }) }}" class="bg-white">Modifier la réservation</a>
@@ -43,9 +42,5 @@
 			{% endfor %}
 		</div>
 	</ul>
-{% endblock %}
 
-{% block javascripts %}
-	{{ parent() }}
-	{{ encore_entry_script_tags('calendar') }}
 {% endblock %}

@@ -19,7 +19,7 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
-                default_target_path: eventrooms_list
+                default_target_path: app_home
                 enable_csrf: true
             logout:
                 path: app_logout
@@ -36,7 +36,6 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
     security:

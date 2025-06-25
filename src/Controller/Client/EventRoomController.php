@@ -7,19 +7,22 @@ use App\Entity\EventRoom;
 use App\Enum\BookingStatus;
 use App\Form\BookingForm;
 use App\Repository\EventRoomRepository;
+use App\Repository\BookingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/eventroom')]
 final class EventRoomController extends AbstractController
 {
     public function __construct(
-        private EventRoomRepository    $errepo,
         private EntityManagerInterface $em
-    ) {}
+    )
+    {
+    }
 
     #[Route('s', name: 'eventrooms_list')]
     public function index(): Response
@@ -32,37 +35,27 @@ final class EventRoomController extends AbstractController
     #[Route('/{eventRoom}', name: 'eventroom')]
     public function view(EventRoom $eventRoom, Request $request): Response
     {
-
         $booking = new Booking();
         $bookingForm = $this->createForm(BookingForm::class, $booking);
         $bookingForm->handleRequest($request);
 
-        if ($bookingForm->isSubmitted() && $bookingForm->isValid()) {
-
-            // Vérifie si une des dates est dans le passé
-            $now = new \DateTimeImmutable('today'); // ignore l'heure
-
-            if ($booking->getDateStart() < $now || $booking->getDateEnd() < $now) {
-                $this->addFlash('error', 'Les dates doivent être postérieures à aujourd’hui.');
+        if ($bookingForm->isSubmitted()) {
+            if (!$bookingForm->isValid()) {
+                $formErrors = $bookingForm->getErrors(true);
+                $messages = [];
+                foreach ($formErrors as $formError) {
+                    $messages[] = $formError->getMessage() . ".\n";
+                }
+                $this->addFlash('error', implode(' ', $messages));
                 return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);
             }
-
-            // Vérifie si dateEnd est avant dateStart
-            if ($booking->getDateEnd() <= $booking->getDateStart()) {
-                $this->addFlash('error', 'La date de fin doit être postérieure à la date de début.');
-                return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);
-            }
-
-            // Vérification du chevauchement
             $existingBookings = $this->em->getRepository(Booking::class)->createQueryBuilder('b')
                 ->select('count(b.id)')
                 ->where('b.eventRoom = :room')
-                ->andWhere('b.bookingStatus != :cancelled') // si tu gères les annulations
                 ->andWhere('b.dateStart < :end AND b.dateEnd > :start')
                 ->setParameter('room', $eventRoom)
                 ->setParameter('start', $booking->getDateStart())
                 ->setParameter('end', $booking->getDateEnd())
-                ->setParameter('cancelled', BookingStatus::CANCELLED) // sinon enlève cette ligne
                 ->getQuery()
                 ->getSingleScalarResult();
 
@@ -71,20 +64,39 @@ final class EventRoomController extends AbstractController
                 return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);
             }
 
-            // Si tout est OK, on enregistre
             $booking->setAppUser($this->getUser());
             $booking->setEventRoom($eventRoom);
             $booking->setBookingStatus(BookingStatus::PENDING);
 
             $this->em->persist($booking);
             $this->em->flush();
+
             $this->addFlash('success', 'Votre réservation a bien été enregistrée.');
-            return $this->redirectToRoute('eventrooms_list');
+            return $this->redirectToRoute('bookings');
         }
 
         return $this->render('eventroom/view.html.twig', [
             'bookingForm' => $bookingForm->createView(),
             'eventRoom' => $eventRoom
         ]);
+    }
+
+    #[Route('/{eventRoom}/bookings', name: 'eventroom_bookings', methods: ['GET'])]
+    public function bookings(EventRoom $eventRoom, BookingRepository $bookingRepository): JsonResponse
+    {
+        $bookings = $bookingRepository->findBy(['eventRoom' => $eventRoom]);
+
+        $events = [];
+        foreach ($bookings as $booking) {
+            $endDate = (clone $booking->getDateEnd())->modify('+1 day');
+            $events[] = [
+                'id' => $booking->getId(),
+                'title' => 'Réservation',
+                'start' => $booking->getDateStart()->format('Y-m-d'),
+                'end' => $endDate->format('Y-m-d'),
+            ];
+        }
+
+        return $this->json($events);
     }
 }
