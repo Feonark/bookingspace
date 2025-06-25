@@ -19,11 +19,16 @@ class EventRoomFixtures extends Fixture implements DependentFixtureInterface
         $faker = Factory::create('fr_FR');
 
         // Créons 5 salles d'événements
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $eventRoom = new EventRoom();
+
+            $image = 'eventroom' . $faker->numberBetween(1, 5) . '.jpg';
+
             $eventRoom
                 ->setName($faker->words(3, true)) // 3 mots comme nom
                 ->setDescription($faker->paragraph())
+                ->setLocation($faker->city())
+                ->setImage($image)
                 ->setCapacity($faker->numberBetween(10, 100))
             ;
 

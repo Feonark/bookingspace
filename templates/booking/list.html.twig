@@ -6,41 +6,79 @@
 {% endblock %}
 
 {% block body %}
-	{% for label, messages in app.flashes %}
-		<div class="alert alert-{{ label }}">
-			{% for message in messages %}
-				{{ message }}
-			{% endfor %}
-		</div>
-	{% endfor %}
+	<div
+		class="max-w-5xl mx-auto p-6">
+		{# MESSAGE FLASH #}
+		{% for label, messages in app.flashes %}
+			<div class="mb-4 p-3 rounded {{ label == 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+				{% for message in messages %}
+					{{ message }}
+				{% endfor %}
+			</div>
+		{% endfor %}
+	</div>
 
-	<h1>Voici la liste de vos réservations,
-		{{ app.user.username }}</h1>
-	<ul>
-		<div class="flex flex-row">
-			{% for booking in bookings %}
-				<div>
-					<div>Vous avez réservé la salle
-						{{ booking.eventRoom.name }}
-						du
-						{{ booking.dateStart|date("m/d/Y") }}
-						au
-						{{ booking.dateEnd|date("m/d/Y") }}</div>
-					<div>Statut de la réservation :
-						{{ booking.bookingStatus.value }}
 
-						{% if (booking.bookingStatus.value != 'cancelled')%}
-							<a href="{{ path('booking_cancel', {'id': booking.id }) }}" class="bg-white">Annuler la réservation</a>
-						{% endif %}
-						{% if (booking.bookingStatus.value != 'confirmed' and booking.bookingStatus.value != 'cancelled')%}
-							<div>
-								<a href="{{ path('booking_edit', {'eventRoom': booking.eventRoom.id }) }}" class="bg-white">Modifier la réservation</a>
-							</div>
-						{% endif %}
+	<div class="p-24 text-3xl font-semibold text-center">
+		<h1 class="">Voici la liste de vos
+			<span class="text-blue-600">réservations,</span><br>
+			{{ app.user.username }}
+		</h1>
+	</div>
+
+	<div class="flex flex-col max-w-5xl mx-auto p-6 gap-4">
+		{% if bookings is empty %}
+			<p class="text-center">Vous n'avez aucune réservation pour le moment.</p>
+		{% endif %}
+		{% for booking in bookings %}
+			{% set status = booking.bookingStatus.value %}
+			{% set statusColor = "" %}
+			{% if status == "pending" %}
+				{% set statusColor = "orange" %}
+			{% elseif status == "confirmed" %}
+				{% set statusColor = "green" %}
+			{% else %}
+				{% set statusColor = "red" %}
+			{% endif %}
+			<div class="flex flex-row bg-gray-200 w-full p-4 rounded-xl gap-1 justify-between">
+
+				<div class="flex flex-row gap-4">
+					<div class="flex flex-col">
+						<h2 class="font-semibold">Salle
+							{{ booking.eventRoom.name }}</h2>
+						<p class="text-gray-500">Du
+							{{ booking.dateStart|date("m/d/Y") }}
+							au
+							{{ booking.dateEnd|date("m/d/Y") }}</p>
+					</div>
+
+					<div class="flex flex-col">
+						<h2 class="font-semibold">Statut de la réservation</h2>
+						<p class="text-{{ statusColor }}-800 bg-{{ statusColor }}-100 px-2 pb-1 rounded-full w-fit">{{ booking.bookingStatus.value }}</p>
 					</div>
 				</div>
-			{% endfor %}
-		</div>
-	</ul>
 
-{% endblock %}
+				<div class="flex flex-row gap-2 items-center ">
+					{% if (booking.bookingStatus.value != 'confirmed' and booking.bookingStatus.value != 'cancelled')%}
+						<a href="{{ path('booking_edit', {'eventRoom': booking.eventRoom.id }) }}" class="flex flex-row text-black py-2 px-4 rounded-xl hover:bg-gray-300 cursor-pointer h-fit gap-2">
+							<span>{{ ux_icon('mingcute:edit-line', { class: 'w-6 h-6' }) }}</span>
+							Modifier
+						</a>
+					{% endif %}
+					{% if (booking.bookingStatus.value != 'cancelled')%}
+						<form method="post" action="{{ path('booking_cancel', {'id': booking.id }) }}" onsubmit="return confirm('Confirmer l\'annulation de la réservation ?');">
+							<button type="submit" class="flex flex-row text-red-600 hover:bg-red-200 py-2 px-4 rounded-xl cursor-pointer h-fit gap-2">
+								<span>{{ ux_icon('proicons:delete', { class: 'w-6 h-6' }) }}</span>
+								Annuler
+							</button>
+						</form>
+					{% endif %}
+
+				</div>
+
+			</div>
+		{% endfor %}
+	</div>
+
+
+</ul>{% endblock %}

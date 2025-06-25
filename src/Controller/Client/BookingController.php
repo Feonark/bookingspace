@@ -35,10 +35,14 @@ final class BookingController extends AbstractController
         );
     }
 
-    #[Route('/{eventRoom}/edit', name: 'booking_edit', methods: ['GET', 'POST'])]
+    #[Route('/{eventRoom}/edit', name: 'booking_edit', methods: ['POST', 'GET'])]
     public function edit(EventRoom $eventRoom, Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
+
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
 
         // Récupérer la réservation existante pour cet utilisateur et cette salle
         $booking = $em->getRepository(Booking::class)->findOneBy([
@@ -108,7 +112,7 @@ final class BookingController extends AbstractController
         ]);
     }
 
-    #[Route('/booking/{id}/cancel', name: 'booking_cancel', methods: ['POST', 'GET'])]
+    #[Route('/booking/{id}/cancel', name: 'booking_cancel', methods: ['POST'])]
     public function cancel(Booking $booking, EntityManagerInterface $em): Response
     {
         if ($booking->getAppUser() !== $this->getUser()) {

@@ -49,6 +49,12 @@ class EventRoom
     #[ORM\ManyToMany(targetEntity: ErgonomicCriteria::class, inversedBy: 'eventRooms')]
     private Collection $ergonomicCriterias;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $location = null;
+
     public function __construct()
     {
         $this->bookings = new ArrayCollection();
@@ -196,6 +202,30 @@ class EventRoom
     public function removeErgonomicCriteria(ErgonomicCriteria $ergonomicCriteria): static
     {
         $this->ergonomicCriterias->removeElement($ergonomicCriteria);
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?string $location): static
+    {
+        $this->location = $location;
 
         return $this;
     }
