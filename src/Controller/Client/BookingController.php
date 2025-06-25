@@ -35,52 +35,47 @@ final class BookingController extends AbstractController
         );
     }
 
-    #[Route('/{eventRoom}/edit', name: 'booking_edit', methods: ['POST', 'GET'])]
-    public function edit(EventRoom $eventRoom, Request $request, EntityManagerInterface $em): Response
+    #[Route('/{booking}/edit', name: 'booking_edit', methods: ['GET', 'POST'])]
+    public function edit(Booking $booking, Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
 
-        if (!$this->getUser()) {
+        if (!$user) {
             return $this->redirectToRoute('app_login');
         }
 
-        // Récupérer la réservation existante pour cet utilisateur et cette salle
-        $booking = $em->getRepository(Booking::class)->findOneBy([
-            'eventRoom' => $eventRoom,
-            'user' => $user,
-        ]);
-
-        if (!$booking) {
-            throw $this->createNotFoundException('Réservation non trouvée pour cet utilisateur et cette salle.');
+        // Vérifie que la réservation appartient bien à l'utilisateur connecté
+        if ($booking->getAppUser() !== $user) {
+            throw $this->createAccessDeniedException("Vous ne pouvez pas modifier cette réservation.");
         }
 
+        $eventRoom = $booking->getEventRoom();
         $form = $this->createForm(BookingForm::class, $booking);
         $form->handleRequest($request);
-
 
         if ($form->isSubmitted()) {
             if (!$form->isValid()) {
                 $formErrors = $form->getErrors(true);
                 $messages = [];
                 foreach ($formErrors as $formError) {
-                    $messages[] = $formError->getMessage() . ".\n";
+                    $messages[] = $formError->getMessage();
                 }
                 $this->addFlash('error', implode(' ', $messages));
-                return $this->redirectToRoute('booking_edit', ['eventRoom' => $eventRoom->getId()]);
+                return $this->redirectToRoute('booking_edit', ['id' => $booking->getId()]);
             }
-            // Tu peux réutiliser tes vérifications ici (dates dans le futur, chevauchement, etc.)
+
             $now = new \DateTimeImmutable('today');
             if ($booking->getDateStart() < $now || $booking->getDateEnd() < $now) {
                 $this->addFlash('error', 'Les dates doivent être postérieures à aujourd’hui.');
-                return $this->redirectToRoute('booking_edit', ['eventRoom' => $eventRoom->getId()]);
+                return $this->redirectToRoute('booking_edit', ['id' => $booking->getId()]);
             }
 
             if ($booking->getDateEnd() <= $booking->getDateStart()) {
                 $this->addFlash('error', 'La date de fin doit être postérieure à la date de début.');
-                return $this->redirectToRoute('booking_edit', ['eventRoom' => $eventRoom->getId()]);
+                return $this->redirectToRoute('booking_edit', ['id' => $booking->getId()]);
             }
 
-            // Vérifier chevauchement, mais exclure la réservation actuelle (id différente)
+            // Vérifie s'il y a un chevauchement avec d'autres réservations
             $existingBookings = $em->getRepository(Booking::class)->createQueryBuilder('b')
                 ->select('count(b.id)')
                 ->where('b.eventRoom = :room')
@@ -97,13 +92,13 @@ final class BookingController extends AbstractController
 
             if ($existingBookings > 0) {
                 $this->addFlash('error', 'Ce créneau est déjà réservé pour cette salle.');
-                return $this->redirectToRoute('booking_edit', ['eventRoom' => $eventRoom->getId()]);
+                return $this->redirectToRoute('booking_edit', ['id' => $booking->getId()]);
             }
 
             $em->flush();
 
             $this->addFlash('success', 'Votre réservation a bien été mise à jour.');
-            return $this->redirectToRoute('bookings'); // ou une autre route de ton choix
+            return $this->redirectToRoute('bookings');
         }
 
         return $this->render('booking/edit.html.twig', [
@@ -112,7 +107,7 @@ final class BookingController extends AbstractController
         ]);
     }
 
-    #[Route('/booking/{id}/cancel', name: 'booking_cancel', methods: ['POST'])]
+    #[Route('/{booking}/cancel', name: 'booking_cancel', methods: ['POST'])]
     public function cancel(Booking $booking, EntityManagerInterface $em): Response
     {
         if ($booking->getAppUser() !== $this->getUser()) {
@@ -127,7 +122,6 @@ final class BookingController extends AbstractController
 
         return $this->redirectToRoute('bookings'); // ou une autre route selon ton app
     }
-
 
     #[Route('/calendar', name: 'app_booking_calendar')]
     public function calendar(): Response

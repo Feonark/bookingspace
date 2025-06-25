@@ -93,7 +93,12 @@
 						<h2 class="text-2xl font-semibold mb-4 text-center">Vous souhaitez réserver ?</h2>
 
 						<div class="flex flex-row w-full gap-4">
-							{{ form_start(bookingForm, {'attr': {'class': 'w-full'}}) }}
+							{{ form_start(bookingForm, {
+    'action': path('eventroom_book', {'eventRoom': eventRoom.id}),
+    'method': 'POST',
+    'attr': {'class': 'w-full'}
+}) }}
+
 
 							<div class="flex flex-row gap-4 w-full">
 

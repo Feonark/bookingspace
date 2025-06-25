@@ -44,8 +44,8 @@
 
 				<div class="flex flex-row gap-4">
 					<div class="flex flex-col">
-						<h2 class="font-semibold">Salle
-							{{ booking.eventRoom.name }}</h2>
+						<a href="{{ path('eventroom', {'eventRoom': booking.eventRoom.id })}}" class="font-semibold hover:underline">Salle
+							{{ booking.eventRoom.name }}</a>
 						<p class="text-gray-500">Du
 							{{ booking.dateStart|date("m/d/Y") }}
 							au
@@ -60,13 +60,13 @@
 
 				<div class="flex flex-row gap-2 items-center ">
 					{% if (booking.bookingStatus.value != 'confirmed' and booking.bookingStatus.value != 'cancelled')%}
-						<a href="{{ path('booking_edit', {'eventRoom': booking.eventRoom.id }) }}" class="flex flex-row text-black py-2 px-4 rounded-xl hover:bg-gray-300 cursor-pointer h-fit gap-2">
+						<a href="{{ path('booking_edit', {'booking': booking.id }) }}" class="flex flex-row text-black py-2 px-4 rounded-xl hover:bg-gray-300 cursor-pointer h-fit gap-2">
 							<span>{{ ux_icon('mingcute:edit-line', { class: 'w-6 h-6' }) }}</span>
 							Modifier
 						</a>
 					{% endif %}
 					{% if (booking.bookingStatus.value != 'cancelled')%}
-						<form method="post" action="{{ path('booking_cancel', {'id': booking.id }) }}" onsubmit="return confirm('Confirmer l\'annulation de la réservation ?');">
+						<form method="post" action="{{ path('booking_cancel', {'booking': booking.id }) }}" onsubmit="return confirm('Confirmer l\'annulation de la réservation ?');">
 							<button type="submit" class="flex flex-row text-red-600 hover:bg-red-200 py-2 px-4 rounded-xl cursor-pointer h-fit gap-2">
 								<span>{{ ux_icon('proicons:delete', { class: 'w-6 h-6' }) }}</span>
 								Annuler

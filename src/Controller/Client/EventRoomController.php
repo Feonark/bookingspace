@@ -30,57 +30,10 @@ final class EventRoomController extends AbstractController
         ]);
     }
 
-    #[Route('/{eventRoom}', name: 'eventroom')]
-    public function view(EventRoom $eventRoom, Request $request): Response
+    #[Route('/{eventRoom}', name: 'eventroom', methods: ['GET'])]
+    public function view(EventRoom $eventRoom): Response
     {
-        $booking = new Booking();
-        $bookingForm = $this->createForm(BookingForm::class, $booking);
-        $bookingForm->handleRequest($request);
-
-        if ($bookingForm->isSubmitted()) {
-            if (!$this->getUser()) {
-                return $this->redirectToRoute('app_login');
-            }
-
-            if ($this->isGranted('ROLE_ADMIN')) {
-                $this->addFlash('info', 'Les administrateurs ne peuvent pas réserver de salle.');
-                return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);
-            }
-
-            if (!$bookingForm->isValid()) {
-                $formErrors = $bookingForm->getErrors(true);
-                $messages = [];
-                foreach ($formErrors as $formError) {
-                    $messages[] = $formError->getMessage() . ".\n";
-                }
-                $this->addFlash('error', implode(' ', $messages));
-                return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);
-            }
-            $existingBookings = $this->em->getRepository(Booking::class)->createQueryBuilder('b')
-                ->select('count(b.id)')
-                ->where('b.eventRoom = :room')
-                ->andWhere('b.dateStart < :end AND b.dateEnd > :start')
-                ->setParameter('room', $eventRoom)
-                ->setParameter('start', $booking->getDateStart())
-                ->setParameter('end', $booking->getDateEnd())
-                ->getQuery()
-                ->getSingleScalarResult();
-
-            if ($existingBookings > 0) {
-                $this->addFlash('error', 'Ce créneau est déjà réservé pour cette salle.');
-                return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);
-            }
-
-            $booking->setAppUser($this->getUser());
-            $booking->setEventRoom($eventRoom);
-            $booking->setBookingStatus(BookingStatus::PENDING);
-
-            $this->em->persist($booking);
-            $this->em->flush();
-
-            $this->addFlash('success', 'Votre réservation a bien été enregistrée.');
-            return $this->redirectToRoute('bookings');
-        }
+        $bookingForm = $this->createForm(BookingForm::class);
 
         return $this->render('eventroom/view.html.twig', [
             'bookingForm' => $bookingForm->createView(),
@@ -88,10 +41,73 @@ final class EventRoomController extends AbstractController
         ]);
     }
 
+    #[Route('/{eventRoom}/book', name: 'eventroom_book', methods: ['POST'])]
+    public function book(EventRoom $eventRoom, Request $request): Response
+    {
+        $booking = new Booking();
+        $bookingForm = $this->createForm(BookingForm::class, $booking);
+        $bookingForm->handleRequest($request);
+
+        if (!$bookingForm->isSubmitted()) {
+            return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);
+        }
+
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('info', 'Les administrateurs ne peuvent pas réserver de salle.');
+            return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);
+        }
+
+        if (!$bookingForm->isValid()) {
+            $formErrors = $bookingForm->getErrors(true);
+            $messages = [];
+            foreach ($formErrors as $formError) {
+                $messages[] = $formError->getMessage() . ".\n";
+            }
+            $this->addFlash('error', implode(' ', $messages));
+            return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);
+        }
+
+        $existingBookings = $this->em->getRepository(Booking::class)->createQueryBuilder('b')
+            ->select('count(b.id)')
+            ->where('b.eventRoom = :room')
+            ->andWhere('b.bookingStatus != :cancelled')
+            ->andWhere('b.dateStart < :end AND b.dateEnd > :start')
+            ->setParameter('room', $eventRoom)
+            ->setParameter('start', $booking->getDateStart())
+            ->setParameter('end', $booking->getDateEnd())
+            ->setParameter('cancelled', BookingStatus::CANCELLED)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+
+        if ($existingBookings > 0) {
+            $this->addFlash('error', 'Ce créneau est déjà réservé pour cette salle.');
+            return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);
+        }
+
+        $booking->setAppUser($this->getUser());
+        $booking->setEventRoom($eventRoom);
+        $booking->setBookingStatus(BookingStatus::PENDING);
+
+        $this->em->persist($booking);
+        $this->em->flush();
+
+        $this->addFlash('success', 'Votre réservation a bien été enregistrée.');
+        return $this->redirectToRoute('bookings');
+    }
+
+
     #[Route('/{eventRoom}/bookings', name: 'eventroom_bookings', methods: ['GET'])]
     public function bookings(EventRoom $eventRoom, BookingRepository $bookingRepository): JsonResponse
     {
-        $bookings = $bookingRepository->findBy(['eventRoom' => $eventRoom]);
+        $bookings = $bookingRepository->findBy([
+            'eventRoom' => $eventRoom,
+            'bookingStatus' => [BookingStatus::PENDING, BookingStatus::CONFIRMED]
+        ]);
 
         $events = [];
         foreach ($bookings as $booking) {
