@@ -27,11 +27,16 @@
 
 			{# PARTIE GAUCHE #}
 			<div class="w-3/5">
-				<div class="flex flex-col bg-gray-200 p-24 rounded-xl text-center gap-4">
-					<h1 class="text-3xl font-semibold">Salle
-						{{ eventRoom.name }}</h1>
-					<p class="text-gray-500">{{ eventRoom.capacity }}
-						places</p>
+				<div class="relative p-24 rounded-xl text-center text-white bg-cover bg-center" style="background-image: url('{{ asset('uploads/images/' ~ eventRoom.image) }}');">
+
+					<div class="absolute inset-0 bg-black/40 rounded-xl"></div>
+
+					<div class="relative z-10 flex flex-col gap-4">
+						<h1 class="text-3xl font-semibold">Salle
+							{{ eventRoom.name }}</h1>
+						<p class="text-gray-100">{{ eventRoom.capacity }}
+							places • {{ eventRoom.location }}</p>
+					</div>
 				</div>
 
 

@@ -50,9 +50,9 @@
 						<label class="cursor-pointer">
 							<input type="checkbox" value="{{ equipment.id }}" data-model="selected_equipments" class="sr-only peer"/>
 							<div class="px-2 py-1 rounded-xl border border-gray-600 text-black text-sm transition
-																																											hover:bg-gray-300
-																																											peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600
-																																											peer-checked:hover:bg-blue-600">
+																																																																																																																												hover:bg-gray-300
+																																																																																																																												peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600
+																																																																																																																												peer-checked:hover:bg-blue-600">
 								{{ equipment.name }}
 							</div>
 						</label>
@@ -69,9 +69,9 @@
 						<label class="cursor-pointer">
 							<input type="checkbox" value="{{ ergonomicCriteria.id }}" data-model="selected_ergonomic_criterias" class="sr-only peer"/>
 							<div class="px-2 py-1 rounded-xl border border-gray-600 text-black text-sm transition
-																																											hover:bg-gray-300
-																																											peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600
-																																											peer-checked:hover:bg-blue-600">
+																																																																																																																												hover:bg-gray-300
+																																																																																																																												peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600
+																																																																																																																												peer-checked:hover:bg-blue-600">
 								{{ ergonomicCriteria.name }}
 							</div>
 						</label>
@@ -88,9 +88,9 @@
 						<label class="cursor-pointer">
 							<input type="checkbox" value="{{ software.id }}" data-model="selected_softwares" class="sr-only peer"/>
 							<div class="px-2 py-1 rounded-xl border border-gray-600 text-black text-sm transition
-																																											hover:bg-gray-300
-																																											peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600
-																																											peer-checked:hover:bg-blue-600">
+																																																																																																																												hover:bg-gray-300
+																																																																																																																												peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600
+																																																																																																																												peer-checked:hover:bg-blue-600">
 								{{ software.name }}
 							</div>
 						</label>
@@ -144,20 +144,24 @@
 
 				<div class="grid grid-cols-2 gap-4">
 					{% for eventRoom in eventRooms %}
-						<div class="flex flex-col bg-gray-200 p-4 rounded-xl gap-4">
-							<div class="flex flex-col gap-4">
-								<p class="font-semibold">
-									Salle
-									{{ eventRoom.name }}
-								</p>
-								<div class="flex flex-rowg gap-1">
-									<span title="Capacité maximum" class="px-2 py-[2px] bg-gray-500 text-white rounded-full flex items-center gap-1 w-fit">{{ ux_icon('lucide:users', { class: 'w-4 h-4' }) }}{{ eventRoom.capacity }}</span>
-									<span title="Équipements" class="px-2 py-[2px] bg-gray-500 text-white rounded-full flex items-center gap-1 w-fit">{{ ux_icon('flowbite:chalkboard-outline', { class: 'w-4 h-4' }) }}{{ eventRoom.equipments|length }}</span>
-									<span title="Critères ergonomiques" class="px-2 py-[2px] bg-gray-500 text-white rounded-full flex items-center gap-1 w-fit">{{ ux_icon('flowbite:face-laugh-outline', { class: 'w-4 h-4' }) }}{{ eventRoom.ergonomicCriterias|length }}</span>
-									<span title="Logiciels" class="px-2 py-[2px] bg-gray-500 text-white rounded-full flex items-center gap-1 w-fit">{{ ux_icon('flowbite:windows-solid', { class: 'w-4 h-4' }) }}{{ eventRoom.softwares|length }}</span>
+						<div>
+							<div class="h-24 rounded-t-xl bg-cover bg-center" style="background-image: url('{{ asset('uploads/images/' ~ eventRoom.image) }}')"></div>
+							<div class="flex flex-col bg-gray-200 p-4 rounded-b-xl gap-4">
+
+								<div class="flex flex-col gap-4">
+									<p class="font-semibold">
+										Salle
+										{{ eventRoom.name }}
+									</p>
+									<div class="flex flex-rowg gap-1">
+										<span title="Capacité maximum" class="px-2 py-[2px] bg-gray-500 text-white rounded-full flex items-center gap-1 w-fit">{{ ux_icon('lucide:users', { class: 'w-4 h-4' }) }}{{ eventRoom.capacity }}</span>
+										<span title="Équipements" class="px-2 py-[2px] bg-gray-500 text-white rounded-full flex items-center gap-1 w-fit">{{ ux_icon('flowbite:chalkboard-outline', { class: 'w-4 h-4' }) }}{{ eventRoom.equipments|length }}</span>
+										<span title="Critères ergonomiques" class="px-2 py-[2px] bg-gray-500 text-white rounded-full flex items-center gap-1 w-fit">{{ ux_icon('flowbite:face-laugh-outline', { class: 'w-4 h-4' }) }}{{ eventRoom.ergonomicCriterias|length }}</span>
+										<span title="Logiciels" class="px-2 py-[2px] bg-gray-500 text-white rounded-full flex items-center gap-1 w-fit">{{ ux_icon('flowbite:windows-solid', { class: 'w-4 h-4' }) }}{{ eventRoom.softwares|length }}</span>
+									</div>
 								</div>
+								<a href="{{ path('eventroom', {'eventRoom': eventRoom.id })}}" class="bg-blue-600 text-white text-center py-2 px-4 rounded-xl hover:bg-blue-700 cursor-pointer">Consulter ou réserver</a>
 							</div>
-							<a href="{{ path('eventroom', {'eventRoom': eventRoom.id })}}" class="bg-blue-600 text-white text-center py-2 px-4 rounded-xl hover:bg-blue-700 cursor-pointer">Consulter ou réserver</a>
 						</div>
 					{% endfor %}
 				</div>
