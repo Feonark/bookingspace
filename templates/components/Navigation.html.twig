@@ -10,22 +10,23 @@
 		</div>
 	{% endif %}
 
-	<div class="flex flex-row py-2 justify-between bg-gray-200 border-b-2 border-gray-300 px-12">
+	<div class="flex flex-row py-2 justify-between bg-gray-200 px-12">
 		<div class="flex font-bold items-center justify-center text-center">
 			<a href="{{ path('eventrooms_list') }}" class="">BookingSpace</a>
 		</div>
 		<div class="flex flex-row gap-2">
 			{% if app.user %}
 				{% if is_granted('ROLE_ADMIN') %}
-					<a href="{{ path('admin') }}" class="bg-blue-600 text-white py-2 px-4 rounded-xl hover:bg-blue-700 cursor-pointer">
-						Mon dashboard
+					<a href="{{ path('admin') }}" class="flex flex-row bg-gray-200 text-black py-2 px-4 rounded-xl hover:bg-gray-300 cursor-pointer gap-2">
+						<span>{{ ux_icon('eos-icons:admin-outlined', { class: 'w-6 h-6' }) }}</span>
+						Dashboard
 					</a>
 				{% else %}
-					<a href="{{ path('bookings') }}" class="bg-blue-600 text-white py-2 px-4 rounded-xl hover:bg-blue-700 cursor-pointer">
-						Mes réservations
+					<a href="{{ path('bookings') }}" class="flex flex-row bg-gray-200 text-black py-2 px-4 rounded-xl hover:bg-gray-300 cursor-pointer gap-2">
+						<span>{{ ux_icon('mynaui:calendar', { class: 'w-6 h-6' }) }}</span>
+						Réservations
 					</a>
 				{% endif %}
-
 
 			{% else %}
 				<a href="{{ path('app_login') }}" class="bg-blue-600 text-white py-2 px-4 rounded-xl hover:bg-blue-700 cursor-pointer">

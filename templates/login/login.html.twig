@@ -4,12 +4,22 @@
 {% endblock %}
 
 {% block body %}
-	<div class="min-h-screen flex flex-col items-center justify-center gap-4">
+	<div
+		class="max-w-5xl mx-auto p-6">
+		{# MESSAGE FLASH #}
+		{% if error %}
+			<div class="alert alert-danger mb-4 p-3 rounded-xl bg-red-100 text-red-800">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+		{% endif %}
+	</div>
 
-		<form method="post" class="w-[320px] border border-slate-100 rounded-lg shadow-sm p-4 bg-white">
-			{% if error %}
-				<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-			{% endif %}
+	<div class=" flex flex-col items-center justify-center gap-4">
+		<div class="p-24 text-3xl font-semibold text-center">
+			<h1 class="">Enchanté de vous revoir.
+				<br>
+				<span class="text-blue-600">Connectez-vous !</span>
+			</h1>
+		</div>
+		<form method="post" class="w-[320px] border border-slate-100 rounded-xl shadow-sm p-4 bg-white flex flex-col gap-4">
 
 			{% if app.user %}
 				<div class="mb-3">
@@ -19,19 +29,27 @@
 				</div>
 			{% endif %}
 
-			<input type="username" placeholder="Votre nom d'utilisateur" value="{{ last_username }}" name="_username" id="username" class="" autocomplete="email" required autofocus>
+			<label class="flex flex-col gap-2">
+				<span class="font-semibold">Nom d'utilisateur</span>
+				<input type="username" placeholder="Votre nom d'utilisateur" value="{{ last_username }}" name="_username" id="username" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-gray-100 transition" autocomplete="email" required autofocus class="">
+			</label>
 
-			<input type="password" placeholder="Tapez votre mot de passe" name="_password" id="password" class="" autocomplete="current-password" required>
+			<label class="flex flex-col gap-2">
+				<span class="font-semibold">Mot de passe</span>
+				<input type="password" placeholder="Tapez votre mot de passe" name="_password" id="password" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-gray-100 transition" autocomplete="current-password" required>
+			</label>
+
 
 			<input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
 
-
-			<button class="flex items-center gap-2" type="submit">
+			<button class="bg-blue-600 text-white py-2 px-4 rounded-xl hover:bg-blue-700 cursor-pointer w-full text-center" type="submit">
 				Se connecter
 			</button>
 		</form>
 
-		<a href="#" class="text-base">Mot de passe oublié ?</a>
+		<p class="text-base">Pas encore de compte ?
+			<a href="{{ path('app_register') }}" class="font-semibold underline">Créer un compte</a>
+		</p>
 
 	</div>
 {% endblock %}

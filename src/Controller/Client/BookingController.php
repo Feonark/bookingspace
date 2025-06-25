@@ -35,7 +35,7 @@ final class BookingController extends AbstractController
         );
     }
 
-    #[Route('/{eventRoom}/edit', name: 'booking_edit', methods: ['GET', 'POST'])]
+    #[Route('/{eventRoom}/edit', name: 'booking_edit', methods: ['POST', 'GET'])]
     public function edit(EventRoom $eventRoom, Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
@@ -108,7 +108,7 @@ final class BookingController extends AbstractController
         ]);
     }
 
-    #[Route('/booking/{id}/cancel', name: 'booking_cancel', methods: ['POST', 'GET'])]
+    #[Route('/booking/{id}/cancel', name: 'booking_cancel', methods: ['POST'])]
     public function cancel(Booking $booking, EntityManagerInterface $em): Response
     {
         if ($booking->getAppUser() !== $this->getUser()) {

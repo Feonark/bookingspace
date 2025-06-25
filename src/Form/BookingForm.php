@@ -31,7 +31,7 @@ class BookingForm extends AbstractType
                 'html5' => true,
             ])
             ->add('book', SubmitType::class, [
-                'label' => 'Booker',
+                'label' => 'Demander une réservation',
             ]);
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {

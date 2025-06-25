@@ -4,20 +4,79 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Register</h1>
+	<div class="max-w-5xl mx-auto p-6">
+		{{ form_errors(registrationForm) }}
+	</div>
 
-	{{ form_errors(registrationForm) }}
+	<div class="flex flex-col items-center justify-center gap-4">
+		<div class="p-24 text-3xl font-semibold text-center">
+			<h1>
+				Oh, on ne s'est jamais croisés.
+				<br>
+				<span class="text-blue-600">Créez votre compte !</span>
+			</h1>
+		</div>
 
-	{{ form_start(registrationForm) }}
-	{{ form_row(registrationForm.username) }}
-	{{ form_row(registrationForm.email) }}
-	{{ form_row(registrationForm.phoneNumber) }}
-	{{ form_row(registrationForm.company) }}
-	{{ form_row(registrationForm.siret) }}
-	{{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
+		{{ form_start(registrationForm, {'attr': {'class': 'w-[320px] border border-slate-100 rounded-xl shadow-sm p-4 bg-white flex flex-col gap-4'}}) }}
 
-	<button type="submit" class="btn">Register</button>
-	{{ form_end(registrationForm) }}
+		<label class="flex flex-col gap-2">
+			<span class="font-semibold">Nom d'utilisateur</span>
+			{{ form_widget(registrationForm.username, {'attr': {
+            'placeholder': "Votre nom d'utilisateur",
+            'class': 'px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-gray-100 transition'
+        }}) }}
+			{{ form_errors(registrationForm.username) }}
+		</label>
+
+		<label class="flex flex-col gap-2">
+			<span class="font-semibold">Email</span>
+			{{ form_widget(registrationForm.email, {'attr': {
+            'placeholder': "Votre adresse email",
+            'class': 'px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-gray-100 transition'
+        }}) }}
+			{{ form_errors(registrationForm.email) }}
+		</label>
+
+		<label class="flex flex-col gap-2">
+			<span class="font-semibold">Téléphone</span>
+			{{ form_widget(registrationForm.phoneNumber, {'attr': {
+            'placeholder': "Votre numéro de téléphone",
+            'class': 'px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-gray-100 transition'
+        }}) }}
+			{{ form_errors(registrationForm.phoneNumber) }}
+		</label>
+
+		<label class="flex flex-col gap-2">
+			<span class="font-semibold">Société</span>
+			{{ form_widget(registrationForm.company, {'attr': {
+            'placeholder': "Votre société",
+            'class': 'px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-gray-100 transition'
+        }}) }}
+			{{ form_errors(registrationForm.company) }}
+		</label>
+
+		<label class="flex flex-col gap-2">
+			<span class="font-semibold">SIRET</span>
+			{{ form_widget(registrationForm.siret, {'attr': {
+            'placeholder': "Votre numéro SIRET",
+            'class': 'px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-gray-100 transition'
+        }}) }}
+			{{ form_errors(registrationForm.siret) }}
+		</label>
+
+		<label class="flex flex-col gap-2">
+			<span class="font-semibold">Mot de passe</span>
+			{{ form_widget(registrationForm.plainPassword, {'attr': {
+            'placeholder': "Tapez votre mot de passe",
+            'class': 'px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-gray-100 transition'
+        }}) }}
+			{{ form_errors(registrationForm.plainPassword) }}
+		</label>
+
+		<button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded-xl hover:bg-blue-700 cursor-pointer w-full text-center">
+			Register
+		</button>
+
+		{{ form_end(registrationForm) }}
+	</div>
 {% endblock %}
