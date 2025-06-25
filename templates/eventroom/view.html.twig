@@ -80,12 +80,15 @@
 					{% include 'booking/calendar.html.twig' %}
 				</div>
 
-				{% if 'ROLE_ADMIN' in app.user.roles %}
-					<div class="p-4 bg-red-100 text-red-800 rounded mb-4">
-						Les administrateurs ne peuvent pas faire de réservation.
-					</div>
-				{% else %}
+				{% if app.user %}
+					{% if 'ROLE_ADMIN' in app.user.roles %}
+						<div class="p-4 bg-red-100 text-red-800 rounded mb-4">
+							Les administrateurs ne peuvent pas faire de réservation.
+						</div>
+					{% endif %}
+				{% endif %}
 
+				{% if not is_granted('ROLE_ADMIN') %}
 					<div class="p-4 bg-gray-200 rounded-xl">
 						<h2 class="text-2xl font-semibold mb-4 text-center">Vous souhaitez réserver ?</h2>
 
@@ -116,9 +119,8 @@
 
 						</div>
 					</div>
-
-				</div>
-
+				{% endif %}
 
 			</div>
-		{% endblock %}
+		</div>
+	{% endblock %}

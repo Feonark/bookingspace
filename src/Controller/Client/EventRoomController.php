@@ -20,9 +20,7 @@ final class EventRoomController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $em
-    )
-    {
-    }
+    ) {}
 
     #[Route('s', name: 'eventrooms_list')]
     public function index(): Response
@@ -40,6 +38,15 @@ final class EventRoomController extends AbstractController
         $bookingForm->handleRequest($request);
 
         if ($bookingForm->isSubmitted()) {
+            if (!$this->getUser()) {
+                return $this->redirectToRoute('app_login');
+            }
+
+            if ($this->isGranted('ROLE_ADMIN')) {
+                $this->addFlash('info', 'Les administrateurs ne peuvent pas réserver de salle.');
+                return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);
+            }
+
             if (!$bookingForm->isValid()) {
                 $formErrors = $bookingForm->getErrors(true);
                 $messages = [];

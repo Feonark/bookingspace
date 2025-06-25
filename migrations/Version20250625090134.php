@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250625074801 extends AbstractMigration
+final class Version20250625090134 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -21,7 +21,7 @@ final class Version20250625074801 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
-            CREATE TABLE booking (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, event_room_id INTEGER NOT NULL, date_start DATE NOT NULL, date_end DATE NOT NULL, booking_status VARCHAR(255) NOT NULL, reminder_notification_created BOOLEAN DEFAULT 0 NOT NULL, CONSTRAINT FK_E00CEDDEA76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E00CEDDED140D93C FOREIGN KEY (event_room_id) REFERENCES event_room (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE booking (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, event_room_id INTEGER NOT NULL, date_start DATE NOT NULL, date_end DATE NOT NULL, booking_status VARCHAR(255) NOT NULL, reminder_notification_created BOOLEAN DEFAULT 0 NOT NULL, reminder_notification_sent_at DATE DEFAULT NULL, CONSTRAINT FK_E00CEDDEA76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E00CEDDED140D93C FOREIGN KEY (event_room_id) REFERENCES event_room (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_E00CEDDEA76ED395 ON booking (user_id)

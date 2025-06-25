@@ -40,6 +40,10 @@ final class BookingController extends AbstractController
     {
         $user = $this->getUser();
 
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         // Récupérer la réservation existante pour cet utilisateur et cette salle
         $booking = $em->getRepository(Booking::class)->findOneBy([
             'eventRoom' => $eventRoom,
