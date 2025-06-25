@@ -53,6 +53,7 @@ final class BookingController extends AbstractController
         $form = $this->createForm(BookingForm::class, $booking);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted()) {
             if (!$form->isValid()) {
                 $formErrors = $form->getErrors(true);
