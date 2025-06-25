@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Enum\BookingStatus;
-use App\EventSubscriber\BookingChangedNotifier;
 use App\Repository\BookingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -57,15 +56,29 @@ class Booking
         return $this->id;
     }
 
+    // ✅ Getter standard attendu par EasyAdmin
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    // ✅ Setter standard attendu par EasyAdmin
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    // 🔁 Getter alternatif que tu avais déjà
     public function getAppUser(): ?User
     {
         return $this->user;
     }
 
+    // 🔁 Setter alternatif que tu avais déjà
     public function setAppUser(?User $user): static
     {
         $this->user = $user;
-
         return $this;
     }
 
@@ -77,7 +90,6 @@ class Booking
     public function setDateStart(\DateTime $dateStart): static
     {
         $this->dateStart = $dateStart;
-
         return $this;
     }
 
@@ -89,7 +101,6 @@ class Booking
     public function setDateEnd(\DateTime $dateEnd): static
     {
         $this->dateEnd = $dateEnd;
-
         return $this;
     }
 
@@ -101,7 +112,6 @@ class Booking
     public function setBookingStatus(BookingStatus $bookingStatus): static
     {
         $this->bookingStatus = $bookingStatus;
-
         return $this;
     }
 
@@ -113,7 +123,6 @@ class Booking
     public function setEventRoom(?EventRoom $eventRoom): static
     {
         $this->eventRoom = $eventRoom;
-
         return $this;
     }
 
@@ -138,7 +147,6 @@ class Booking
     public function removeNotification(Notification $notification): static
     {
         if ($this->notifications->removeElement($notification)) {
-            // set the owning side to null (unless already changed)
             if ($notification->getBooking() === $this) {
                 $notification->setBooking(null);
             }
@@ -155,7 +163,6 @@ class Booking
     public function setReminderNotificationCreated(bool $reminderNotificationCreated): self
     {
         $this->reminderNotificationCreated = $reminderNotificationCreated;
-
         return $this;
     }
 
