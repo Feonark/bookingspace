@@ -45,7 +45,8 @@ class SendUserNotificationsCommand extends Command
                 ->setTitle(sprintf('La réservation %s commence le %s', $booking->getId(), $booking->getDateStart()->format('d/m/Y')))
                 ->setMessage('La réservation commence sous 5 jours');
 
-            $booking->setReminderNotificationCreated(true);
+            $booking->setReminderNotificationCreated(true)
+                ->setReminderNotificationSentAt(new \DateTime());
 
             $this->entityManager->persist($notification);
             $createdCount++;

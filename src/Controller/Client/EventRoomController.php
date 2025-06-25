@@ -19,9 +19,10 @@ use Symfony\Component\Routing\Annotation\Route;
 final class EventRoomController extends AbstractController
 {
     public function __construct(
-        private EventRoomRepository    $errepo,
         private EntityManagerInterface $em
-    ) {}
+    )
+    {
+    }
 
     #[Route('s', name: 'eventrooms_list')]
     public function index(): Response
@@ -38,19 +39,16 @@ final class EventRoomController extends AbstractController
         $bookingForm = $this->createForm(BookingForm::class, $booking);
         $bookingForm->handleRequest($request);
 
-        if ($bookingForm->isSubmitted() && $bookingForm->isValid()) {
-            $now = new \DateTimeImmutable('today');
-
-            if ($booking->getDateStart() < $now || $booking->getDateEnd() < $now) {
-                $this->addFlash('error', 'Les dates doivent être postérieures à aujourd’hui.');
+        if ($bookingForm->isSubmitted()) {
+            if (!$bookingForm->isValid()) {
+                $formErrors = $bookingForm->getErrors(true);
+                $messages = [];
+                foreach ($formErrors as $formError) {
+                    $messages[] = $formError->getMessage() . ".\n";
+                }
+                $this->addFlash('error', implode(' ', $messages));
                 return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);
             }
-
-            if ($booking->getDateEnd() <= $booking->getDateStart()) {
-                $this->addFlash('error', 'La date de fin doit être postérieure à la date de début.');
-                return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);
-            }
-
             $existingBookings = $this->em->getRepository(Booking::class)->createQueryBuilder('b')
                 ->select('count(b.id)')
                 ->where('b.eventRoom = :room')
@@ -74,7 +72,7 @@ final class EventRoomController extends AbstractController
             $this->em->flush();
 
             $this->addFlash('success', 'Votre réservation a bien été enregistrée.');
-            return $this->redirectToRoute('eventrooms_list');
+            return $this->redirectToRoute('bookings');
         }
 
         return $this->render('eventroom/view.html.twig', [

@@ -44,6 +44,9 @@ class Booking
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $reminderNotificationCreated = false;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable:true)]
+    private ?\DateTime $reminderNotificationSentAt = null;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
@@ -154,5 +157,15 @@ class Booking
         $this->reminderNotificationCreated = $reminderNotificationCreated;
 
         return $this;
+    }
+
+    public function getReminderNotificationSentAt(): ?\DateTime
+    {
+        return $this->reminderNotificationSentAt;
+    }
+
+    public function setReminderNotificationSentAt(?\DateTime $reminderNotificationSentAt): void
+    {
+        $this->reminderNotificationSentAt = $reminderNotificationSentAt;
     }
 }

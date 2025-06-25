@@ -14,7 +14,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 #[AsEntityListener(event: Events::postUpdate, entity: Booking::class)]
 #[AsEntityListener(event: Events::postPersist, entity: Booking::class)]
 #[AsEntityListener(event: Events::postRemove, entity: Booking::class)]
-readonly class BookingChangedNotifier
+readonly class      BookingChangedNotifier
 {
     public function __construct(private Security $security)
     {

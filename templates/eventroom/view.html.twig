@@ -1,88 +1,96 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Détails de la salle
-	{{ eventRoom.name }}
+    {{ eventRoom.name }}
 {% endblock %}
 
 {% block stylesheets %}
-	{{ parent() }}
-	{{ encore_entry_link_tags('calendar') }}
-{# Si Tailwind n'est pas chargé dans base.html.twig, tu peux l'ajouter ici #}
-	{# <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet"> #}
+    {{ parent() }}
+    {{ encore_entry_link_tags('calendar') }}
+    {# Si Tailwind n'est pas chargé dans base.html.twig, tu peux l'ajouter ici #}
+    {# <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet"> #}
 {% endblock %}
 
 {% block body %}
-	<div class="max-w-5xl mx-auto p-6">
+    <div class="max-w-5xl mx-auto p-6">
 
-		{% for label, messages in app.flashes %}
-			<div class="mb-4 p-3 rounded {{ label == 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-				{% for message in messages %}
-					{{ message }}
-				{% endfor %}
-			</div>
-		{% endfor %}
+        {% for label, messages in app.flashes %}
+            <div class="mb-4 p-3 rounded {{ label == 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endfor %}
 
-		<h1 class="text-3xl font-bold mb-4">{{ eventRoom.name }}</h1>
+        <h1 class="text-3xl font-bold mb-4">{{ eventRoom.name }}</h1>
 
-		<p class="mb-2">
-			<strong>Capacité :</strong>
-			{{ eventRoom.capacity }}</p>
+        <p class="mb-2">
+            <strong>Capacité :</strong>
+            {{ eventRoom.capacity }}
+        </p>
 
-		{% if eventRoom.description %}
-			<p class="mb-4">
-				<strong>Description :</strong>
-				{{ eventRoom.description }}</p>
-		{% endif %}
+        {% if eventRoom.description %}
+            <p class="mb-4">
+                <strong>Description :</strong>
+                {{ eventRoom.description }}
+            </p>
+        {% endif %}
 
-		<h2 class="text-xl font-semibold mb-2">Logiciels disponibles</h2>
-		<ul class="list-disc list-inside mb-4">
-			{% for software in eventRoom.softwares %}
-				<li>{{ software.name }}</li>
-			{% else %}
-				<li>Aucun logiciel disponible.</li>
-			{% endfor %}
-		</ul>
+        <h2 class="text-xl font-semibold mb-2">Logiciels disponibles</h2>
+        <ul class="list-disc list-inside mb-4">
+            {% for software in eventRoom.softwares %}
+                <li>{{ software.name }}</li>
+            {% else %}
+                <li>Aucun logiciel disponible.</li>
+            {% endfor %}
+        </ul>
 
-		<h2 class="text-xl font-semibold mb-2">Équipements disponibles</h2>
-		<ul class="list-disc list-inside mb-4">
-			{% for equipment in eventRoom.equipments %}
-				<li>{{ equipment.name }}</li>
-			{% else %}
-				<li>Aucun équipement disponible.</li>
-			{% endfor %}
-		</ul>
+        <h2 class="text-xl font-semibold mb-2">Équipements disponibles</h2>
+        <ul class="list-disc list-inside mb-4">
+            {% for equipment in eventRoom.equipments %}
+                <li>{{ equipment.name }}</li>
+            {% else %}
+                <li>Aucun équipement disponible.</li>
+            {% endfor %}
+        </ul>
 
-		<h2 class="text-xl font-semibold mb-2">Critères ergonomiques</h2>
-		<ul class="list-disc list-inside mb-8">
-			{% for criterion in eventRoom.ergonomicCriterias %}
-				<li>{{ criterion.name }}</li>
-			{% else %}
-				<li>Aucun critère ergonomique renseigné.</li>
-			{% endfor %}
-		</ul>
+        <h2 class="text-xl font-semibold mb-2">Critères ergonomiques</h2>
+        <ul class="list-disc list-inside mb-8">
+            {% for criterion in eventRoom.ergonomicCriterias %}
+                <li>{{ criterion.name }}</li>
+            {% else %}
+                <li>Aucun critère ergonomique renseigné.</li>
+            {% endfor %}
+        </ul>
 
-		<a href="{{ url('eventrooms_list') }}" class="inline-block mb-8 text-blue-600 hover:underline">← Retour à la liste des salles</a>
+        <a href="{{ url('eventrooms_list') }}" class="inline-block mb-8 text-blue-600 hover:underline">← Retour à la liste des salles</a>
 
-		<h2 class="text-2xl font-bold mb-4">Calendrier des réservations</h2>
-		<div data-live-ignore class="border rounded p-4 max-w-lg max-h-[400px] overflow-auto">
-			{% include 'booking/calendar.html.twig' %}
-		</div>
+        <h2 class="text-2xl font-bold mb-4">Calendrier des réservations</h2>
+        <div data-live-ignore class="border rounded p-4 max-w-lg max-h-[400px] overflow-auto">
+            {% include 'booking/calendar.html.twig' %}
+        </div>
 
-		<br>
+        <br>
 
-		<div class="max-w-md">
-			{{ form_start(bookingForm) }}
-			<div class="mb-4">
-				{{ form_row(bookingForm.dateStart, {'attr': {'class': 'border rounded px-3 py-2 w-full'}}) }}
-			</div>
-			<div class="mb-4">
-				{{ form_row(bookingForm.dateEnd, {'attr': {'class': 'border rounded px-3 py-2 w-full'}}) }}
-			</div>
-			<div>
-				{{ form_row(bookingForm.book, {'attr': {'class': 'bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 cursor-pointer'}}) }}
-			</div>
-			{{ form_end(bookingForm) }}
-		</div>
+        <div class="max-w-md">
+            {% if 'ROLE_ADMIN' in app.user.roles %}
+                <div class="p-4 bg-red-100 text-red-800 rounded mb-4">
+                    Les administrateurs ne peuvent pas faire de réservation.
+                </div>
+            {% else %}
+                {{ form_start(bookingForm) }}
+                <div class="mb-4">
+                    {{ form_row(bookingForm.dateStart, {'attr': {'class': 'border rounded px-3 py-2 w-full'}}) }}
+                </div>
+                <div class="mb-4">
+                    {{ form_row(bookingForm.dateEnd, {'attr': {'class': 'border rounded px-3 py-2 w-full'}}) }}
+                </div>
+                <div>
+                    {{ form_row(bookingForm.book, {'attr': {'class': 'bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 cursor-pointer'}}) }}
+                </div>
+                {{ form_end(bookingForm) }}
+            {% endif %}
+        </div>
 
-	</div>
+    </div>
 {% endblock %}
