@@ -24,8 +24,22 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Bienvenue sur le Dashboard </h1>
+    <h1>Bienvenue sur le Dashboard</h1>
+
+    <h3></h3>
+    <ul>
+        {% for notification in notifications %}
+            <li>
+                <a href="{{ notificationUrls[notification.id]|default('#') }}">
+                    <strong>{{ notification.title }}</strong> — {{ notification.message }}
+                </a>
+                <br>
+                <small style="color: gray;">{{ notification.createdAt|date('d/m/Y H:i') }}</small>
+            </li>
+        {% else %}
+            <li>Aucune notification.</li>
+        {% endfor %}
+    </ul>
 
     {{ parent() }}
-
 {% endblock %}

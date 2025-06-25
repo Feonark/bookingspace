@@ -3,67 +3,86 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Booking;
-use App\Entity\Equipment;
 use App\Entity\EventRoom;
+use App\Entity\Equipment;
 use App\Entity\ErgonomicCriteria;
 use App\Entity\Notification;
 use App\Entity\Software;
 use App\Entity\User;
 use App\Repository\NotificationRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AsDashboard;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
-use Symfony\Bundle\SecurityBundle\Security;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Controller\Admin\BookingCrudController;
 
-#[AsDashboard(name: 'admin')]
+#[AsDashboard(name: 'Admin')]
 class DashboardController extends AbstractDashboardController
 {
     private NotificationRepository $notificationRepository;
-    private Security $security;
+    private AdminUrlGenerator $adminUrlGenerator;
 
-    public function __construct(NotificationRepository $notificationRepository, Security $security)
-    {
+    public function __construct(
+        NotificationRepository $notificationRepository,
+        AdminUrlGenerator $adminUrlGenerator
+    ) {
         $this->notificationRepository = $notificationRepository;
-        $this->security = $security;
+        $this->adminUrlGenerator = $adminUrlGenerator;
     }
 
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        $unreadCount = $this->notificationRepository->countUnreadForUser();
-        // Affiche ton dashboard personnalisé dans le layout EasyAdmin
-        return parent::index()->setContent(
-            $this->renderView('admin/dashboard.html.twig', [
-                'unreadNotificationsCount' => $unreadCount,
-            ])
-        );
+        $notifications = $this->notificationRepository->findLatest(); // dernières notif globales
+        $unreadNotificationsCount = $this->notificationRepository->countUnread();
+
+        // Générer des liens vers la réservation liée (si elle existe)
+        $notificationUrls = [];
+
+        foreach ($notifications as $notification) {
+            $booking = $notification->getBooking(); // doit exister dans ton entité Notification
+
+            if ($booking) {
+                $url = $this->adminUrlGenerator
+                    ->setController(BookingCrudController::class)
+                    ->setAction('edit')
+                    ->setEntityId($booking->getId())
+                    ->generateUrl();
+
+                $notificationUrls[$notification->getId()] = $url;
+            } else {
+                // Lien de secours
+                $notificationUrls[$notification->getId()] = $this->generateUrl('admin_notification_index');
+            }
+        }
+
+        return $this->render('admin/dashboard.html.twig', [
+            'notifications' => $notifications,
+            'notificationUrls' => $notificationUrls,
+            'unreadNotificationsCount' => $unreadNotificationsCount,
+        ]);
     }
 
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('BookingSpace')
-            ->setTitle('My Admin');
+            ->setTitle('EeventRoom');
     }
 
     public function configureMenuItems(): iterable
     {
-        $unreadCount = $this->notificationRepository->countUnreadForUser();
+        yield MenuItem::linkToDashboard('Tableau de bord', 'fa fa-home');
 
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-
-        yield MenuItem::linkToCrud('Notifications', 'fas fa-bell', Notification::class)
-            ->setBadge($unreadCount > 0 ? (string)$unreadCount : null, 'danger');
-
-        yield MenuItem::linkToCrud('EventRoom', 'fas fa-door-open', EventRoom::class);
-        yield MenuItem::linkToCrud('Equipment', 'fas fa-tools', Equipment::class);
-        yield MenuItem::linkToCrud('Booking', 'fas fa-calendar-check', Booking::class);
-        yield MenuItem::linkToCrud('Ergonomic Criteria', 'fas fa-brain', ErgonomicCriteria::class);
-        yield MenuItem::linkToCrud('Software', 'fas fa-laptop-code', Software::class);
-        yield MenuItem::linkToCrud('User', 'fas fa-user', User::class);
+        yield MenuItem::section('Gestion');
+        yield MenuItem::linkToCrud('Réservations', 'fa fa-calendar', Booking::class);
+        yield MenuItem::linkToCrud('Salles', 'fa fa-door-open', EventRoom::class);
+        yield MenuItem::linkToCrud('Équipements', 'fa fa-plug', Equipment::class);
+        yield MenuItem::linkToCrud('Critères Ergonomiques', 'fa fa-chair', ErgonomicCriteria::class);
+        yield MenuItem::linkToCrud('Logiciels', 'fa fa-cogs', Software::class);
+        yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', User::class);
+        yield MenuItem::linkToCrud('Notifications', 'fa fa-bell', Notification::class);
     }
 }

@@ -155,6 +155,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->email;
     }
+    public function getName(): string
+    {
+        return $this->username;
+    }
 
     public function setEmail(string $email): static
     {
@@ -245,5 +249,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+
+    }
+    public function __toString(): string
+    {
+        return $this->username ?? 'Utilisateur';
     }
 }
