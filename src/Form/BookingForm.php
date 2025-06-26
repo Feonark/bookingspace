@@ -40,14 +40,14 @@ class BookingForm extends AbstractType
             $data = $form->getData();
 
             if ($data->getDateStart() && $data->getDateEnd() && $data->getDateStart() > $data->getDateEnd()) {
-                $form->get('dateStart')->addError(new FormError('La date de début ne peut pas être après la date de fin.'));
+                $form->get('dateStart')->addError(new FormError('La date de début ne peut pas être postérieure à la date de fin. '));
             }
             $now = new \DateTimeImmutable('today');
-            if ($data->getDateStart() < $now || $data->getDateEnd() < $now) {
-                $form->get('dateStart')->addError(new FormError('La date du début doivent être postérieure à aujourd’hui'));
+            if ($data->getDateStart() < $now) {
+                $form->get('dateStart')->addError(new FormError('La date de début doit être postérieure à aujourd’hui. '));
             }
             if ($data->getDateEnd() < $now) {
-                $form->get('dateEnd')->addError(new FormError('la date de fin doit être postérieure à aujourd’hui'));
+                $form->get('dateEnd')->addError(new FormError('La date de fin doit être postérieure à aujourd’hui. '));
             }
         });
     }

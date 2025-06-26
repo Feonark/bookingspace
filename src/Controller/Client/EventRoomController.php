@@ -83,7 +83,6 @@ final class EventRoomController extends AbstractController
             ->getQuery()
             ->getSingleScalarResult();
 
-
         if ($existingBookings > 0) {
             $this->addFlash('error', 'Ce créneau est déjà réservé pour cette salle.');
             return $this->redirectToRoute('eventroom', ['eventRoom' => $eventRoom->getId()]);

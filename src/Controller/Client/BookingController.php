@@ -44,7 +44,6 @@ final class BookingController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        // Vérifie que la réservation appartient bien à l'utilisateur connecté
         if ($booking->getAppUser() !== $user) {
             throw $this->createAccessDeniedException("Vous ne pouvez pas modifier cette réservation.");
         }
@@ -81,7 +80,7 @@ final class BookingController extends AbstractController
                 ->where('b.eventRoom = :room')
                 ->andWhere('b.bookingStatus != :cancelled')
                 ->andWhere('b.id != :currentId')
-                ->andWhere('b.dateStart < :end AND b.dateEnd > :start')
+                ->andWhere('b.dateStart <= :end AND b.dateEnd >= :start')
                 ->setParameter('room', $eventRoom)
                 ->setParameter('cancelled', BookingStatus::CANCELLED)
                 ->setParameter('currentId', $booking->getId())
